@@ -1,5 +1,13 @@
-ion-menu ion-content {
+// Import theme models using modern @use syntax
+@use '../assets/styles/theme-models.scss';
+
+// Base ion-menu styling that will be overridden by themes
+ion-menu {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
+}
+
+ion-menu ion-content {
+  --background: transparent !important;
 }
 
 ion-menu.md ion-content {
@@ -116,4 +124,137 @@ ion-note {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
+}
+
+// Apply theme classes to menu items
+ion-item {
+  &.menu-item {
+    border-radius: 8px;
+    margin: 4px 8px;
+    transition: all 0.3s ease;
+  }
+}
+
+// Language Selector in Sidebar
+.language-selector-item {
+  margin: 8px;
+  border-radius: 8px;
+  background: var(--ion-item-background, var(--ion-background-color));
+  border: 1px solid var(--ion-border-color, rgba(255, 255, 255, 0.1));
+  
+  .language-dropdown-sidebar {
+    flex: 1;
+    margin-left: 8px;
+    
+    .theme-select-sidebar {
+      width: 100%;
+      max-width: none;
+      
+      &::part(container) {
+        background: transparent;
+        border: none;
+      }
+      
+      &::part(text) {
+        color: var(--ion-text-color);
+        font-size: 14px;
+      }
+      
+      &::part(icon) {
+        color: var(--ion-text-color);
+      }
+    }
+  }
+}
+
+// Theme-specific styling for sidebar language dropdown
+.ocean {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(0, 119, 190, 0.1), rgba(0, 180, 216, 0.1));
+    border-color: rgba(0, 180, 216, 0.3);
+    
+    .theme-select-sidebar::part(text) {
+      color: #00b4d8;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #0077be;
+    }
+  }
+}
+
+.cyberpunk {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(0, 255, 65, 0.1), rgba(57, 255, 20, 0.1));
+    border-color: rgba(0, 255, 65, 0.3);
+    
+    .theme-select-sidebar::part(text) {
+      color: #00ff41;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #39ff14;
+    }
+  }
+}
+
+.sunset {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(255, 94, 77, 0.1), rgba(255, 154, 0, 0.1));
+    border-color: rgba(255, 154, 0, 0.3);
+    
+    .theme-select-sidebar::part(text) {
+      color: #ff9a00;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #ff5e4d;
+    }
+  }
+}
+
+.forest {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(34, 139, 34, 0.1), rgba(50, 205, 50, 0.1));
+    border-color: rgba(50, 205, 50, 0.3);
+    
+    .theme-select-sidebar::part(text) {
+      color: #32cd32;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #228b22;
+    }
+  }
+}
+
+.royal {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(138, 43, 226, 0.1), rgba(186, 85, 211, 0.1));
+    border-color: rgba(186, 85, 211, 0.3);
+    
+    .theme-select-sidebar::part(text) {
+      color: #ba55d3;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #8a2be2;
+    }
+  }
+}
+
+.midnight {
+  .language-selector-item {
+    background: linear-gradient(45deg, rgba(25, 25, 112, 0.2), rgba(72, 61, 139, 0.2));
+    border-color: rgba(72, 61, 139, 0.4);
+    
+    .theme-select-sidebar::part(text) {
+      color: #9370db;
+    }
+    
+    .theme-select-sidebar::part(icon) {
+      color: #483d8b;
+    }
+  }
 }

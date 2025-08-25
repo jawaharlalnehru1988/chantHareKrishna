@@ -1,31 +1,57 @@
-<ion-app>
+<ion-app [class]="themeClass">
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
+    <ion-menu contentId="main-content" type="overlay" [class]="themeClass">
+      <ion-content [class]="themeClass">
         <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi&#64;ionicframework.com</ion-note>
+          <ion-list-header>{{ content.appTitle || 'Chanting App' }}</ion-list-header>
+          <ion-note>{{ content.appSubtitle || 'Hare Krishna 🙏' }}</ion-note>
+
+          <!-- Language Selector -->
+          <ion-item class="language-selector-item" [class]="themeClass">
+            <ion-icon name="language-outline" slot="start"></ion-icon>
+            <div class="language-dropdown-sidebar" [class]="themeClass">
+              <ion-select
+                [value]="currentLanguage"
+                (ionChange)="onLanguageChange($event)"
+                interface="popover"
+                placeholder="Language"
+                class="theme-select-sidebar"
+                [class]="themeClass">
+                @for (language of languageOptions; track language.key) {
+                  <ion-select-option [value]="language.key">
+                    {{language.description}} - {{language.name}}
+                  </ion-select-option>
+                }
+              </ion-select>
+            </div>
+          </ion-item>
 
           @for (p of appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+              <ion-item 
+                routerDirection="root" 
+                [routerLink]="[p.url]" 
+                lines="none" 
+                detail="false" 
+                routerLinkActive="selected"
+                class="menu-item">
+                <ion-icon aria-hidden="true" slot="start" [name]="p.icon"></ion-icon>
+                <ion-label>{{ getMenuItemTitle(p.titleKey) || p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }
         </ion-list>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
+        <!-- <ion-list id="labels-list">
+          <ion-list-header>{{ content.quickActionsLabel || 'Quick Actions' }}</ion-list-header>
 
-          @for (label of labels; track label) {
-            <ion-item lines="none">
+          @for (label of labels; track label; let i = $index) {
+            <ion-item lines="none" class="menu-item">
               <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>
+              <ion-label>{{ getLabel(labelKeys[i]) || label }}</ion-label>
             </ion-item>
           }
-        </ion-list>
+        </ion-list> -->
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

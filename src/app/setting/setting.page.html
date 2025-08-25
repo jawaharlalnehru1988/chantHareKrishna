@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="settings-outline"></ion-icon>
+      Settings
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [class]="'settings-page ' + themeClass">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="settings-container">
+    <!-- Theme Selection Section -->
+    <ion-card class="theme-section">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="color-palette-outline"></ion-icon>
+          Theme Selection
+        </ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Choose Theme</ion-label>
+            <ion-select 
+              [value]="currentTheme"
+              (ionChange)="onThemeChange($event)"
+              placeholder="Select Theme"
+              interface="popover">
+              @for (theme of themes; track theme.key) {
+                <ion-select-option [value]="theme.key">
+                  {{theme.emoji}} {{theme.name}}
+                </ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+        <!-- Theme Preview Cards -->
+        <div class="theme-preview-grid">
+          @for (theme of themes; track theme.key) {
+            <div 
+              class="theme-preview-card"
+              [class]="theme.key"
+              [class.selected]="currentTheme === theme.key"
+              (click)="selectTheme(theme.key)">
+              <div class="theme-preview-header">
+                <span class="theme-emoji">{{theme.emoji}}</span>
+                <h3>{{theme.name}}</h3>
+              </div>
+              <p>{{theme.description}}</p>
+              @if (currentTheme === theme.key) {
+                <div class="selected-indicator">
+                  <ion-icon name="checkmark-circle"></ion-icon>
+                  Active
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Other Settings Section (placeholder for future features) -->
+    <ion-card class="other-settings">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="brush-outline"></ion-icon>
+          App Settings
+        </ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h3>Current Theme</h3>
+              <p>{{getCurrentThemeName()}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

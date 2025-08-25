@@ -1,0 +1,201 @@
+// Import theme models
+@use '../../assets/styles/theme-models.scss';
+
+.settings-page {
+  --background: transparent;
+  
+  .settings-container {
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .theme-section {
+    margin-bottom: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    
+    ion-card-header {
+      text-align: center;
+      
+      ion-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        
+        ion-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .theme-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .theme-preview-card {
+    padding: 20px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    .theme-preview-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      
+      .theme-emoji {
+        font-size: 2rem;
+      }
+      
+      h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+    }
+    
+    p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+    
+    .selected-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      
+      ion-icon {
+        font-size: 1rem;
+        color: #4CAF50;
+      }
+    }
+    
+    &.selected {
+      border-color: currentColor;
+      transform: scale(1.02);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .other-settings {
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    
+    ion-card-header {
+      text-align: center;
+      
+      ion-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        
+        ion-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 768px) {
+    .settings-container {
+      padding: 12px;
+    }
+    
+    .theme-preview-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .theme-preview-card {
+      padding: 16px;
+      min-height: 100px;
+    }
+  }
+}
+
+// Apply theme-specific styles to the settings page
+.settings-page.theme-ocean {
+  ion-card {
+    --background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+.settings-page.theme-sunset {
+  ion-card {
+    --background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+}
+
+.settings-page.theme-forest {
+  ion-card {
+    --background: rgba(113, 178, 128, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(113, 178, 128, 0.3);
+  }
+}
+
+.settings-page.theme-cyberpunk {
+  ion-card {
+    --background: rgba(0, 255, 65, 0.05);
+    border: 1px solid #00ff41;
+  }
+  
+  ion-card-title, ion-label h3 {
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  }
+}
+
+.settings-page.theme-royal {
+  ion-card {
+    --background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+  }
+}
+
+.settings-page.theme-midnight {
+  ion-card {
+    --background: rgba(52, 152, 219, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+  }
+}
