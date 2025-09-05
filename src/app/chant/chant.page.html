@@ -2,9 +2,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <!-- <ion-back-button defaultHref="/"></ion-back-button> -->
+       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Go to Menu</ion-title>
     <ion-buttons slot="end">
       <div class="language-dropdown" [class]="themeClass">
         <ion-select
@@ -186,13 +186,28 @@
           </ion-fab-button>
         </ion-fab>
 
-        <!-- Sound Selector Button -->
+        <!-- Sound Selector Dropdown -->
         <ion-fab style="position: static; pointer-events: auto;">
           <ion-fab-button
             color="secondary"
-            (click)="showSoundSelector()"
-            id="sound-trigger">
-            <ion-icon name="musical-notes-outline"></ion-icon>
+            class="sound-fab-button"
+            [class]="themeClass">
+            <div class="sound-dropdown" [class]="themeClass">
+              <ion-select
+                [value]="currentSoundMode"
+                (ionChange)="setSoundMode($event.detail.value)"
+                interface="popover"
+                placeholder=""
+                class="theme-select sound-select-compact"
+                [class]="themeClass">
+                @for (sound of soundOptions; track sound.key) {
+                  <ion-select-option [value]="sound.key">
+                    {{sound.icon}} {{sound.name}} - {{sound.description}}
+                  </ion-select-option>
+                }
+              </ion-select>
+            </div>
+            <ion-icon name="musical-notes-outline" class="sound-icon"></ion-icon>
           </ion-fab-button>
         </ion-fab>
 
@@ -208,69 +223,6 @@
           </ion-fab-button>
         </ion-fab>
       </section>
-
-      <!-- Language Selector Popover -->
-      <!-- <ion-popover
-        [isOpen]="isLanguageSelectorOpen"
-        (didDismiss)="isLanguageSelectorOpen = false"
-        trigger="header-language-trigger,language-trigger"
-        placement="bottom-end"
-        [showBackdrop]="true"
-        [class]="'language-popover ' + themeClass">
-        <ng-template>
-          <ion-content [class]="'language-popover-content ' + themeClass" [scrollY]="false">
-            <div class="language-options" [class]="themeClass">
-              @for (language of languageOptions; track language) {
-                <div class="language-item" [class]="themeClass"
-                  (click)="setLanguage(language.key)"
-                  [class.selected]="currentLanguage === language.key">
-                  <h3>{{language.flag}} {{language.name}}</h3>
-                  <p>{{language.description}}</p>
-                </div>
-              }
-            </div>
-          </ion-content>
-        </ng-template>
-      </ion-popover> -->
-
-      <!-- Sound Selector Popover -->
-      <ion-popover
-        [isOpen]="isSoundSelectorOpen"
-        (didDismiss)="isSoundSelectorOpen = false"
-        trigger="sound-trigger"
-        placement="bottom-end"
-        [showBackdrop]="true"
-        [class]="'sound-popover ' + themeClass">
-        <ng-template>
-          <ion-content [class]="'sound-popover-content ' + themeClass" [scrollY]="false">
-            <div class="sound-options" [class]="themeClass">
-              @for (sound of soundOptions; track sound) {
-                <div class="sound-item" [class]="themeClass"
-                  (click)="setSoundMode(sound.key)"
-                  [class.selected]="currentSoundMode === sound.key">
-                  <h3>{{sound.icon}} {{sound.name}}</h3>
-                  <p>{{sound.description}}</p>
-                  <!-- Play/Pause controls for continuous chanting -->
-                  @if (sound.key === 'continuous' && currentSoundMode === 'continuous') {
-                    <div class="continuous-controls">
-                      <ion-button
-                        fill="clear"
-                        size="small"
-                        (click)="toggleContinuousAudio(); $event.stopPropagation()">
-                        <ion-icon
-                          [name]="(isContinuousPlaying && !isContinuousPaused) ? 'pause-outline' : 'play-outline'"
-                          slot="icon-only">
-                        </ion-icon>
-                        {{ (isContinuousPlaying && !isContinuousPaused) ? 'Pause' : 'Play' }}
-                      </ion-button>
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          </ion-content>
-        </ng-template>
-      </ion-popover>
 
       <!-- Reset Confirmation Alert -->
       <ion-alert

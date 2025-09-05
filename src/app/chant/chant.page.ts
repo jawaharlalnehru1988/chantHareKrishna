@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
-import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonIcon, IonFab, IonFabButton, IonHeader, IonToolbar, IonButtons, IonSelect, IonSelectOption, IonMenuButton } from '@ionic/angular/standalone';
 
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -30,6 +30,13 @@ interface LanguageContent {
   mahaRoundCompleteToast: string;
   resetAllConfirmTitle: string;
   resetAllConfirmMessage: string;
+  // Sound options translations
+  soundOptions: {
+    none: { name: string; description: string; };
+    tick: { name: string; description: string; };
+    prabhupada: { name: string; description: string; };
+    continuous: { name: string; description: string; };
+  };
 }
 
 interface LanguageOption {
@@ -61,19 +68,17 @@ interface SoundOption {
   templateUrl: './chant.page.html',
   styleUrls: ['./chant.page.scss'],
   standalone: true,
-  imports: [IonBackButton, IonButtons, IonTitle, IonToolbar, IonHeader, 
+  imports: [IonButtons, IonToolbar, IonHeader,
     IonContent,
     IonButton,
     IonProgressBar,
     IonToast,
     IonAlert,
-    IonPopover,
     IonIcon,
     IonFab,
     IonFabButton,
     IonSelect,
-    IonSelectOption
-]
+    IonSelectOption, IonMenuButton]
 })
 export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
 
@@ -114,7 +119,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 Congratulations! Lord Krishna is pleased with you!! 🙏',
         mahaRoundCompleteToast: '🌟 Congratulations! Sri Prabhupada is pleased with you!! 🙏✨',
         resetAllConfirmTitle: 'Reset All Progress',
-        resetAllConfirmMessage: 'Are you sure you want to reset ALL your chanting progress? This will reset Current Round, Rounds Completed, and Maha Rounds. This action cannot be undone.'
+        resetAllConfirmMessage: 'Are you sure you want to reset ALL your chanting progress? This will reset Current Round, Rounds Completed, and Maha Rounds. This action cannot be undone.',
+        soundOptions: {
+          none: { name: 'No Sound', description: 'Silent chanting' },
+          tick: { name: 'Tick Sound', description: 'Chant with tick sound' },
+          prabhupada: { name: 'Prabhupada', description: 'Chant with Prabhupada' },
+          continuous: { name: '108 Continues Chanting', description: 'Continuous Prabhupada chanting until 108' }
+        }
       }
     },
     {
@@ -144,7 +155,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 வாழ்த்துக்கள்! கிருஷ்ண பகவான் உங்களை மகிழ்வித்துள்ளார்!! 🙏',
         mahaRoundCompleteToast: '🌟 வாழ்த்துக்கள்! ஸ்ரீல பிரபுபாதர் உங்களை மகிழ்வித்துள்ளார்!! 🙏✨',
         resetAllConfirmTitle: 'அனைத்து முன்னேற்றத்தையும் மீட்டமை',
-        resetAllConfirmMessage: 'உங்கள் அனைத்து ஜப முன்னேற்றத்தையும் மீட்டமைக்க நீங்கள் உறுதியாக இருக்கிறீர்களா? இது தற்போதைய சுற்று, முடிந்த சுற்றுகள் மற்றும் மகா சுற்றுகளை மீட்டமைக்கும். இந்த செயலை செயல்தவிர்க்க முடியாது.'
+        resetAllConfirmMessage: 'உங்கள் அனைத்து ஜப முன்னேற்றத்தையும் மீட்டமைக்க நீங்கள் உறுதியாக இருக்கிறீர்களா? இது தற்போதைய சுற்று, முடிந்த சுற்றுகள் மற்றும் மகா சுற்றுகளை மீட்டமைக்கும். இந்த செயலை செயல்தவிர்க்க முடியாது.',
+        soundOptions: {
+          none: { name: 'ஒலி இல்லை', description: 'அமைதியான ஜபம்' },
+          tick: { name: 'டிக் ஒலி', description: 'டிக் ஒலியுடன் ஜபம்' },
+          prabhupada: { name: 'பிரபுபாதர்', description: 'பிரபுபாதருடன் ஜபம்' },
+          continuous: { name: '108 தொடர்ச்சியான ஜபம்', description: '108 வரை தொடர்ச்சியான பிரபுபாதர் ஜபம்' }
+        }
       }
     },
     {
@@ -174,7 +191,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 बधाई हो! भगवान कृष्ण आपसे प्रसन्न हैं!! 🙏',
         mahaRoundCompleteToast: '🌟 बधाई हो! श्रील प्रभुपाद आपसे प्रसन्न हैं!! 🙏✨',
         resetAllConfirmTitle: 'सभी प्रगति रीसेट करें',
-        resetAllConfirmMessage: 'क्या आप वाकई अपनी सभी जप प्रगति को रीसेट करना चाहते हैं? यह वर्तमान चक्र, पूर्ण चक्र और महा चक्र को रीसेट कर देगा। यह क्रिया पूर्ववत नहीं की जा सकती।'
+        resetAllConfirmMessage: 'क्या आप वाकई अपनी सभी जप प्रगति को रीसेट करना चाहते हैं? यह वर्तमान चक्र, पूर्ण चक्र और महा चक्र को रीसेट कर देगा। यह क्रिया पूर्ववत नहीं की जा सकती।',
+        soundOptions: {
+          none: { name: 'कोई आवाज नहीं', description: 'मौन जप' },
+          tick: { name: 'टिक ध्वनि', description: 'टिक ध्वनि के साथ जप' },
+          prabhupada: { name: 'प्रभुपाद', description: 'प्रभुपाद के साथ जप' },
+          continuous: { name: '108 निरंतर जप', description: '108 तक निरंतर प्रभुपाद जप' }
+        }
       }
     },
     {
@@ -204,7 +227,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 అభినందనలు! శ్రీ కృష్ణ భగవాన్ మీతో సంతోషంగా ఉన్నారు!! 🙏',
         mahaRoundCompleteToast: '🌟 అభినందనలు! శ్రీ ప్రభుపాద్ మీతో సంతోషంగా ఉన్నారు!! 🙏✨',
         resetAllConfirmTitle: 'అన్ని ప్రగతిని రీసెట్ చేయండి',
-        resetAllConfirmMessage: 'మీరు మీ అన్ని జప ప్రగతిని రీసెట్ చేయాలనుకుంటున్నారా? ఇది ప్రస్తుత చక్రం, పూర్తయిన చక్రాలు మరియు మహా చక్రాలను రీసెట్ చేస్తుంది. ఈ చర్యను తిరిగి తీసుకోలేము.'
+        resetAllConfirmMessage: 'మీరు మీ అన్ని జప ప్రగతిని రీసెట్ చేయాలనుకుంటున్నారా? ఇది ప్రస్తుత చక్రం, పూర్తయిన చక్రాలు మరియు మహా చక్రాలను రీసెట్ చేస్తుంది. ఈ చర్యను తిరిగి తీసుకోలేము.',
+        soundOptions: {
+          none: { name: 'శబ్దం లేదు', description: 'నిశ్శబ్ద జపం' },
+          tick: { name: 'టిక్ శబ్దం', description: 'టిక్ శబ్దంతో జపం' },
+          prabhupada: { name: 'ప్రభుపాద్', description: 'ప్రభుపాద్‌తో జపం' },
+          continuous: { name: '108 నిరంతర జపం', description: '108 వరకు నిరంతర ప్రభుపాద్ జపం' }
+        }
       }
     },
     {
@@ -234,7 +263,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 ಅಭಿನಂದನೆಗಳು! ಶ್ರೀ ಕೃಷ್ಣ ಭಗವಾನ್ ನಿಮ್ಮಿಂದ ಸಂತೋಷಗೊಂಡಿದ್ದಾರೆ!! 🙏',
         mahaRoundCompleteToast: '🌟 ಅಭಿನಂದನೆಗಳು! ಶ್ರೀಲ ಪ್ರಭುಪಾದ ನಿಮ್ಮಿಂದ ಸಂತೋಷಗೊಂಡಿದ್ದಾರೆ!! 🙏✨',
         resetAllConfirmTitle: 'ಎಲ್ಲಾ ಪ್ರಗತಿಯನ್ನು ಮರುಸೆಟ್ ಮಾಡಿ',
-        resetAllConfirmMessage: 'ನೀವು ನಿಮ್ಮ ಎಲ್ಲಾ ಜಪ ಪ್ರಗತಿಯನ್ನು ಮರುಸೆಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಪ್ರಸ್ತುತ ಚಕ್ರ, ಪೂರ್ಣಗೊಂಡ ಚಕ್ರಗಳು ಮತ್ತು ಮಹಾ ಚಕ್ರಗಳನ್ನು ಮರುಸೆಟ್ ಮಾಡುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ಹಿಂದಿರುಗಿಸಲಾಗುವುದಿಲ್ಲ.'
+        resetAllConfirmMessage: 'ನೀವು ನಿಮ್ಮ ಎಲ್ಲಾ ಜಪ ಪ್ರಗತಿಯನ್ನು ಮರುಸೆಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಪ್ರಸ್ತುತ ಚಕ್ರ, ಪೂರ್ಣಗೊಂಡ ಚಕ್ರಗಳು ಮತ್ತು ಮಹಾ ಚಕ್ರಗಳನ್ನು ಮರುಸೆಟ್ ಮಾಡುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ಹಿಂದಿರುಗಿಸಲಾಗುವುದಿಲ್ಲ.',
+        soundOptions: {
+          none: { name: 'ಧ್ವನಿ ಇಲ್ಲ', description: 'ಮೌನ ಜಪ' },
+          tick: { name: 'ಟಿಕ್ ಧ್ವನಿ', description: 'ಟಿಕ್ ಧ್ವನಿಯೊಂದಿಗೆ ಜಪ' },
+          prabhupada: { name: 'ಪ್ರಭುಪಾದ', description: 'ಪ್ರಭುಪಾದರೊಂದಿಗೆ ಜಪ' },
+          continuous: { name: '108 ನಿರಂತರ ಜಪ', description: '108 ವರೆಗೆ ನಿರಂತರ ಪ್ರಭುಪಾದ ಜಪ' }
+        }
       }
     },
     {
@@ -264,7 +299,14 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 അഭിനന്ദനങ്ങൾ! ശ്രീ കൃഷ്ണ ഭഗവാൻ നിങ്ങളിൽ സന്തോഷത്തിലാണ്!! 🙏',
         mahaRoundCompleteToast: '🌟 അഭിനന്ദനങ്ങൾ! ശ്രീല പ്രഭുപാദ് നിങ്ങളിൽ സന്തോഷത്തിലാണ്!! 🙏✨',
         resetAllConfirmTitle: 'എല്ലാ പുരോഗതിയും റീസെറ്റ് ചെയ്യുക',
-        resetAllConfirmMessage: 'നിങ്ങൾ നിങ്ങളുടെ എല്ലാ ജപ പുരോഗതിയും റീസെറ്റ് ചെയ്യാൻ ഉറപ്പാണോ? ഇത് നിലവിലെ ചക്രം, പൂർത്തിയായ ചക്രങ്ങൾ, മഹാ ചക്രങ്ങൾ എന്നിവയെ റീസെറ്റ് ചെയ്യും. ഈ പ്രവർത്തനം പിൻവലിക്കാൻ കഴിയില്ല.'
+        resetAllConfirmMessage: 'നിങ്ങൾ നിങ്ങളുടെ എല്ലാ ജപ പുരോഗതിയും റീസെറ്റ് ചെയ്യാൻ ഉറപ്പാണോ? ഇത് നിലവിലെ ചക്രം, പൂർത്തിയായ ചക്രങ്ങൾ, മഹാ ചക്രങ്ങൾ എന്നിവയെ റീസെറ്റ് ചെയ്യും. ഈ പ്രവർത്തനം പിൻവലിക്കാൻ കഴിയില്ല.',
+        soundOptions: {
+          none: { name: 'ശബ്ദമില്ല', description: 'നിശ്ശബ്ദ ജപം' },
+          tick: { name: 'ടിക്ക് ശബ്ദം', description: 'ടിക്ക് ശബ്ദത്തോടെ ജപം' },
+          prabhupada: { name: 'പ്രഭുപാദ്', description: 'പ്രഭുപാദിനൊപ്പം ജപം' },
+          continuous: { name: '108 തുടർച്ചയായ ജപം', description: '108 വരെ തുടർച്ചയായ പ്രഭുപാദ് ജപം' }
+        },
+      
       }
     },
     {
@@ -294,7 +336,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 अभिनंदन! भगवान कृष्ण आपल्यावर आनंदित आहेत!! 🙏',
         mahaRoundCompleteToast: '🌟 अभिनंदन! श्रील प्रभुपाद आपल्यावर आनंदित आहेत!! 🙏✨',
         resetAllConfirmTitle: 'सर्व प्रगती रीसेट करा',
-        resetAllConfirmMessage: 'आपण आपल्या सर्व जप प्रगती रीसेट करू इच्छिता का? हे वर्तमान चक्र, पूर्ण झालेले चक्रे आणि महा चक्रे रीसेट करेल. ही क्रिया पूर्ववत केली जाऊ शकत नाही.'
+        resetAllConfirmMessage: 'आपण आपल्या सर्व जप प्रगती रीसेट करू इच्छिता का? हे वर्तमान चक्र, पूर्ण झालेले चक्रे आणि महा चक्रे रीसेट करेल. ही क्रिया पूर्ववत केली जाऊ शकत नाही.',
+         soundOptions: {
+          none: { name: 'आवाज नाही', description: 'मौन जप' },
+          tick: { name: 'टिक आवाज', description: 'टिक आवाजासह जप' },
+          prabhupada: { name: 'प्रभुपाद', description: 'प्रभुपादांसह जप' },
+          continuous: { name: '१०८ सलग जप', description: '१०८ पर्यंत सलग प्रभुपाद जप' }
+        }
       }
     },
     {
@@ -324,7 +372,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 અભિનંદન! ભગવાન કૃષ્ણ તમારા પર આનંદિત છે!! 🙏',
         mahaRoundCompleteToast: '🌟 અભિનંદન! શ્રીલ પ્રભુપાદ તમારા પર આનંદિત છે!! 🙏✨',
         resetAllConfirmTitle: 'તમામ પ્રગતિ રીસેટ કરો',
-        resetAllConfirmMessage: 'શું તમે તમારી તમામ જપ પ્રગતિને રીસેટ કરવા માટે ખાતરી છો? આ વર્તમાન ચક્ર, પૂર્ણ થયેલ ચક્રો અને મહા ચક્રોને રીસેટ કરશે. આ ક્રિયા પાછી ખેંચી શકાતી નથી.'
+        resetAllConfirmMessage: 'શું તમે તમારી તમામ જપ પ્રગતિને રીસેટ કરવા માટે ખાતરી છો? આ વર્તમાન ચક્ર, પૂર્ણ થયેલ ચક્રો અને મહા ચક્રોને રીસેટ કરશે. આ ક્રિયા પાછી ખેંચી શકાતી નથી.',
+        soundOptions: {
+          none: { name: 'કોઈ અવાજ નથી', description: 'મૌન જપ' },
+          tick: { name: 'ટિક અવાજ', description: 'ટિક અવાજ સાથે જપ' },
+          prabhupada: { name: 'પ્રભુપાદ', description: 'પ્રભુપાદ સાથે જપ' },
+          continuous: { name: '૧૦૮ સતત જપ', description: '૧૦૮ સુધી સતત પ્રભુપાદ જપ' }
+        }
       }
     },
     {
@@ -354,7 +408,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 অভিনন্দন! ভগবান কৃষ্ণ আপনার উপর আনন্দিত! 🙏',
         mahaRoundCompleteToast: '🌟 অভিনন্দন! শ্রীল প্রভুপাদ আপনার উপর আনন্দিত! 🙏✨',
         resetAllConfirmTitle: 'সমস্ত প্রগতি রিসেট করুন',
-        resetAllConfirmMessage: 'আপনি কি আপনার সমস্ত জপ প্রগতি রিসেট করতে নিশ্চিত? এটি বর্তমান চক্র, সম্পন্ন চক্র এবং মহা চক্র রিসেট করবে। এই ক্রিয়া পূর্বাবস্থায় ফিরিয়ে নেওয়া যাবে না।'
+        resetAllConfirmMessage: 'আপনি কি আপনার সমস্ত জপ প্রগতি রিসেট করতে নিশ্চিত? এটি বর্তমান চক্র, সম্পন্ন চক্র এবং মহা চক্র রিসেট করবে। এই ক্রিয়া পূর্বাবস্থায় ফিরিয়ে নেওয়া যাবে না।',
+        soundOptions: {
+          none: { name: 'কোনো শব্দ নেই', description: 'মৌন জপ' },
+          tick: { name: 'টিক শব্দ', description: 'টিক শব্দ সহ জপ' },
+          prabhupada: { name: 'প্রভুপাদ', description: 'প্রভুপাদ সহ জপ' },
+          continuous: { name: '১০৮ অবিরত জপ', description: '১০৮ পর্যন্ত অবিরত প্রভুপাদ জপ' }
+        }
       }
     },
     {
@@ -384,7 +444,13 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 ਬਧਾਈ ਹੋ! ਭਗਵਾਨ ਕ੍ਰਿਸ਼ਨਾ ਤੁਹਾਡੇ ਉੱਤੇ ਖੁਸ਼ ਹਨ!! 🙏',
         mahaRoundCompleteToast: '🌟 ਬਧਾਈ ਹੋ! ਸ਼੍ਰੀਲ ਪ੍ਰਭੁਪਾਦ ਤੁਹਾਡੇ ਉੱਤੇ ਖੁਸ਼ ਹਨ!! 🙏✨',
         resetAllConfirmTitle: 'ਸਾਰੀ ਪ੍ਰਗਤੀ ਰੀਸੈਟ ਕਰੋ',
-        resetAllConfirmMessage: 'ਕੀ ਤੁਸੀਂ ਆਪਣੀ ਸਾਰੀ ਜਪ ਪ੍ਰਗਤੀ ਨੂੰ ਰੀਸੈਟ ਕਰਨ ਲਈ ਯਕੀਨੀ ਹੋ? ਇਹ ਮੌਜੂਦਾ ਚੱਕਰ, ਪੂਰੇ ਹੋਏ ਚੱਕਰ ਅਤੇ ਮਹਾ ਚੱਕਰ ਨੂੰ ਰੀਸੈਟ ਕਰੇਗਾ। ਇਹ ਕਾਰਵਾਈ ਵਾਪਸ ਨਹੀਂ ਲਿਆਈ ਜਾ ਸਕਦੀ।'
+        resetAllConfirmMessage: 'ਕੀ ਤੁਸੀਂ ਆਪਣੀ ਸਾਰੀ ਜਪ ਪ੍ਰਗਤੀ ਨੂੰ ਰੀਸੈਟ ਕਰਨ ਲਈ ਯਕੀਨੀ ਹੋ? ਇਹ ਮੌਜੂਦਾ ਚੱਕਰ, ਪੂਰੇ ਹੋਏ ਚੱਕਰ ਅਤੇ ਮਹਾ ਚੱਕਰ ਨੂੰ ਰੀਸੈਟ ਕਰੇਗਾ। ਇਹ ਕਾਰਵਾਈ ਵਾਪਸ ਨਹੀਂ ਲਿਆਈ ਜਾ ਸਕਦੀ।',
+        soundOptions: {
+          none: { name: 'ਕੋਈ ਅਵਾਜ਼ ਨਹੀਂ', description: 'ਮੌਨ ਜਪ' },
+          tick: { name: 'ਟਿਕ ਅਵਾਜ਼', description: 'ਟਿਕ ਅਵਾਜ਼ ਨਾਲ ਜਪ' },
+          prabhupada: { name: 'ਪ੍ਰਭੁਪਾਦ', description: 'ਪ੍ਰਭੁਪਾਦ ਨਾਲ ਜਪ' },
+          continuous: { name: '੧੦੮ ਸਤਤ ਜਪ', description: '੧੦੮ ਤੱਕ ਸਤਤ ਪ੍ਰਭੁਪਾਦ ਜਪ' }
+        }
       }
     },
     {
@@ -414,38 +480,40 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         roundCompleteToast: '🎉 مبارک ہو! خدا کرشنا آپ پر خوش ہیں!! 🙏',
         mahaRoundCompleteToast: '🌟 مبارک ہو! شریل پرابھوپاد آپ پر خوش ہیں!! 🙏✨',
         resetAllConfirmTitle: 'تمام ترقی ری سیٹ کریں',
-        resetAllConfirmMessage: 'کیا آپ واقعی اپنی تمام جاپ ترقی کو ری سیٹ کرنا چاہتے ہیں؟ یہ موجودہ چکر، مکمل چکر اور مہا چکر کو ری سیٹ کرے گا۔ یہ عمل واپس نہیں لیا جا سکتا۔'
+        resetAllConfirmMessage: 'کیا آپ واقعی اپنی تمام جاپ ترقی کو ری سیٹ کرنا چاہتے ہیں؟ یہ موجودہ چکر، مکمل چکر اور مہا چکر کو ری سیٹ کرے گا۔ یہ عمل واپس نہیں لیا جا سکتا۔',
+        soundOptions: {
+          none: { name: 'کوئی آواز نہیں', description: 'خاموش جاپ' },
+          tick: { name: 'ٹک آواز', description: 'ٹک آواز کے ساتھ جاپ' },
+          prabhupada: { name: 'پربھوپاد', description: 'پربھوپاد کے ساتھ جاپ' },
+          continuous: { name: '۱۰۸ مسلسل جاپ', description: '۱۰۸ تک مسلسل پربھوپاد جاپ' }
+        }
       }
     }
   ];
 
-  // Sound options for the music selector
-  soundOptions: SoundOption[] = [
-    {
-      key: 'none',
-      icon: '🔇',
-      name: 'No Sound',
-      description: 'Silent chanting'
-    },
-    {
-      key: 'tick',
-      icon: '🔔',
-      name: 'Tick Sound',
-      description: 'Chant with tick sound'
-    },
-    {
-      key: 'prabhupada',
-      icon: '🎵',
-      name: 'Prabhupada',
-      description: 'Chant with Prabhupada'
-    },
-    {
-      key: 'continuous',
-      icon: '🔄',
-      name: '108 Continues Chanting',
-      description: 'Continuous Prabhupada chanting until 108'
+  // Sound options for the music selector (computed from current language)
+  get soundOptions(): SoundOption[] {
+    const icons = ['🔇', '🔔', '🎵', '🔄'];
+    const keys: ChantSoundType[] = ['none', 'tick', 'prabhupada', 'continuous'];
+    const soundOptionsData = this.content?.soundOptions;
+    
+    if (!soundOptionsData) {
+      // Fallback to English if content is not available
+      return [
+        { key: 'none', icon: '🔇', name: 'No Sound', description: 'Silent chanting' },
+        { key: 'tick', icon: '🔔', name: 'Tick Sound', description: 'Chant with tick sound' },
+        { key: 'prabhupada', icon: '🎵', name: 'Prabhupada', description: 'Chant with Prabhupada' },
+        { key: 'continuous', icon: '🔄', name: '108 Continues Chanting', description: 'Continuous Prabhupada chanting until 108' }
+      ];
     }
-  ];
+    
+    return keys.map((key, index) => ({
+      key,
+      icon: icons[index],
+      name: soundOptionsData[key].name,
+      description: soundOptionsData[key].description
+    }));
+  }
 
   // Language options for the selector (derived from languageService)
   get languageOptions(): LanguageOption[] {
@@ -473,7 +541,6 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   showToast: boolean = false;
   toastMessage: string = '';
   isLanguageSelectorOpen: boolean = false;
-  isSoundSelectorOpen: boolean = false;
   isAudioPlaying: boolean = false;
   isContinuousPlaying: boolean = false;
   isContinuousPaused: boolean = false;
@@ -644,7 +711,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       this.bellAudio.volume = 0.9;
       
       // Initialize Sri Krishna Caitanya audio
-      this.sriKrishnaCaitanyaAudio = new Audio('assets/music/sriKrishnaCaitanya.mp3');
+      this.sriKrishnaCaitanyaAudio = new Audio('assets/music/sriKrishnaChaitanya.mp3');
       this.sriKrishnaCaitanyaAudio.preload = 'auto';
       this.sriKrishnaCaitanyaAudio.volume = 0.8;
       
@@ -1008,12 +1075,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     this.languageService.setLanguage(selectedLanguage);
   }
 
-  // Show sound selector
-  showSoundSelector() {
-    this.isSoundSelectorOpen = true;
-  }
-
-  // Set sound mode and close selector
+  // Set sound mode
   setSoundMode(soundMode: ChantSoundType) {
     // Stop continuous audio if switching away from continuous mode
     if (this.currentSoundMode === 'continuous' && soundMode !== 'continuous' && this.isContinuousPlaying && this.continuousAudio) {
@@ -1024,7 +1086,6 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     
     this.currentSoundMode = soundMode;
     this.saveProgress();
-    this.isSoundSelectorOpen = false;
   }
 
   // Get current daily goal progress percentage

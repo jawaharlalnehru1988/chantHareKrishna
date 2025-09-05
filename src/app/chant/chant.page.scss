@@ -15,25 +15,27 @@
     .language-popover-content, .sound-popover-content {
       --background: inherit !important;
       --color: inherit !important;
-      min-width: 300px !important;
-      max-width: 350px !important;
+      width: 80vw !important; /* 80% of viewport width for better mobile experience */
+      max-width: 400px !important; /* Maximum width for larger screens */
+      min-width: 280px !important; /* Minimum width to ensure readability */
       border-radius: 15px !important;
       overflow: hidden !important;
     }
   }
   
-  /* Global popover override for better contrast */
+  /* Global popover override for better contrast and transparency */
   &.theme-ocean ion-popover,
   &.theme-sunset ion-popover,
   &.theme-forest ion-popover,
   &.theme-cyberpunk ion-popover,
   &.theme-royal ion-popover,
   &.theme-midnight ion-popover {
-    --backdrop-opacity: 0.6 !important;
+    --backdrop-opacity: 0.3 !important; /* Reduced opacity so background is more visible */
     
     .popover-content {
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
       border-radius: 15px !important;
+      backdrop-filter: blur(8px) !important; /* Add blur effect for better visual separation */
     }
   }
 }
@@ -43,49 +45,55 @@ ion-popover.language-popover,
 ion-popover.sound-popover {
   &.theme-ocean {
     .popover-content {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%) !important;
       border: 2px solid rgba(0, 245, 255, 0.5) !important;
       border-radius: 15px !important;
+      backdrop-filter: blur(10px) !important;
     }
   }
   
   &.theme-cyberpunk {
     .popover-content {
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%) !important;
+      background: linear-gradient(135deg, rgba(15, 15, 15, 0.9) 0%, rgba(26, 26, 46, 0.9) 50%, rgba(22, 33, 62, 0.9) 100%) !important;
       border: 2px solid #00ff41 !important;
       border-radius: 0 !important;
+      backdrop-filter: blur(8px) !important;
     }
   }
   
   &.theme-sunset {
     .popover-content {
-      background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%) !important;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.85) 0%, rgba(254, 202, 87, 0.85) 50%, rgba(255, 159, 243, 0.85) 100%) !important;
       border: 2px solid rgba(255, 255, 255, 0.5) !important;
       border-radius: 20px !important;
+      backdrop-filter: blur(10px) !important;
     }
   }
   
   &.theme-forest {
     .popover-content {
-      background: linear-gradient(135deg, #134e5e 0%, #71b280 100%) !important;
+      background: linear-gradient(135deg, rgba(19, 78, 94, 0.85) 0%, rgba(113, 178, 128, 0.85) 100%) !important;
       border: 2px solid rgba(113, 178, 128, 0.6) !important;
       border-radius: 12px !important;
+      backdrop-filter: blur(10px) !important;
     }
   }
   
   &.theme-royal {
     .popover-content {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%) !important;
       border: 3px solid rgba(255, 215, 0, 0.7) !important;
       border-radius: 15px !important;
+      backdrop-filter: blur(10px) !important;
     }
   }
   
   &.theme-midnight {
     .popover-content {
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+      background: linear-gradient(135deg, rgba(44, 62, 80, 0.85) 0%, rgba(52, 73, 94, 0.85) 100%) !important;
       border: 2px solid rgba(52, 152, 219, 0.6) !important;
       border-radius: 10px !important;
+      backdrop-filter: blur(10px) !important;
     }
   }
 }
@@ -627,7 +635,7 @@ ion-popover.sound-popover {
 }
 
 /* Language Dropdown Theme Styling */
-.language-dropdown {
+.language-dropdown, .sound-dropdown {
   &.theme-ocean {
     .theme-select {
       --background: rgba(102, 126, 234, 0.2) !important;
@@ -730,6 +738,104 @@ ion-popover.sound-popover {
       transform: translateY(-2px) !important;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
     }
+    
+    &.sound-select {
+      min-width: 140px !important; /* Slightly wider for sound options */
+    }
+    
+    &.sound-select-compact {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      opacity: 0 !important; /* Make invisible */
+      z-index: 20 !important; /* Place above everything to capture clicks */
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      min-width: 56px !important; /* Match FAB size */
+      border-radius: 50% !important;
+      cursor: pointer !important;
+      
+      &::part(container) {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 50% !important;
+      }
+      
+      &::part(icon) {
+        display: none !important; /* Hide select arrow */
+      }
+      
+      &::part(placeholder) {
+        display: none !important; /* Hide placeholder text */
+      }
+      
+      &::part(text) {
+        display: none !important; /* Hide selected text */
+      }
+    }
+  }
+}
+
+/* Sound FAB Button Styling */
+.sound-fab-button {
+  position: relative !important;
+  
+  .sound-dropdown {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 10 !important;
+    border-radius: 50% !important;
+  }
+  
+  .sound-icon {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important; /* Below the select but visible */
+    font-size: 24px !important;
+    color: white !important;
+  }
+  
+  /* Ensure FAB button maintains standard size */
+  width: 56px !important;
+  height: 56px !important;
+  
+  /* Theme-specific icon colors */
+  &.theme-ocean .sound-icon {
+    color: white !important;
+  }
+  
+  &.theme-cyberpunk .sound-icon {
+    color: #00ff41 !important;
+  }
+  
+  &.theme-sunset .sound-icon {
+    color: white !important;
+  }
+  
+  &.theme-forest .sound-icon {
+    color: white !important;
+  }
+  
+  &.theme-royal .sound-icon {
+    color: #ffd700 !important;
+  }
+  
+  &.theme-midnight .sound-icon {
+    color: white !important;
   }
 }
 
@@ -1509,23 +1615,26 @@ ion-modal.language-selector-modal {
 .language-popover-content, .sound-popover-content {
   --background: #ffffff !important;
   background: #ffffff !important;
-  min-width: 280px;
-  max-width: 320px;
-  max-height: 400px; /* Limit height for scrolling */
+  width: 80vw !important; /* 80% of viewport width */
+  max-width: 400px !important; /* Maximum width for larger screens */
+  min-width: 280px !important; /* Minimum width for readability */
+  max-height: 70vh !important; /* Maximum height to prevent overflow */
   
   .language-options, .sound-options {
-    padding: 12px;
-    max-height: 360px; /* Allow scrolling for many options */
+    padding: 16px; /* Increased padding for better touch targets */
+    max-height: calc(70vh - 32px) !important; /* Allow scrolling for many options */
     overflow-y: auto;
     
     .language-item, .sound-item {
-      padding: 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
+      padding: 16px; /* Increased padding for better touch experience */
+      margin-bottom: 12px;
+      border-radius: 12px;
       background: #f8f9fa;
       border: 1px solid #e9ecef;
       cursor: pointer;
       transition: all 0.3s ease;
+      word-wrap: break-word; /* Ensure long text wraps */
+      overflow-wrap: break-word;
       
       &:hover {
         background: #e9ecef;
@@ -1548,32 +1657,43 @@ ion-modal.language-selector-modal {
       }
       
       h3 {
-        font-size: 16px;
-        margin-bottom: 2px;
+        font-size: 16px; /* Slightly larger for better readability */
+        font-weight: 600;
+        margin-bottom: 6px;
         display: flex;
         align-items: center;
         gap: 8px;
         color: #333;
+        line-height: 1.4;
       }
       
       p {
-        font-size: 12px;
-        margin-left: 28px; /* Align with text after icon */
+        font-size: 13px; /* Slightly larger for mobile readability */
+        margin-left: 0; /* Remove left margin for better mobile layout */
         color: #666;
         margin-bottom: 0;
+        line-height: 1.4;
+        word-wrap: break-word;
+        white-space: normal; /* Ensure text can wrap */
       }
       
       .continuous-controls {
-        margin-top: 8px;
-        margin-left: 28px; /* Align with description text */
+        margin-top: 12px;
+        margin-left: 0; /* Remove left margin for better mobile layout */
         
         ion-button {
           --color: #007bff;
-          font-size: 12px;
-          height: 28px;
+          --padding-start: 12px;
+          --padding-end: 12px;
+          --padding-top: 8px;
+          --padding-bottom: 8px;
+          font-size: 13px;
+          height: 36px; /* Larger touch target */
+          font-weight: 500;
           
           ion-icon {
-            margin-right: 4px;
+            margin-right: 6px;
+            font-size: 16px;
           }
         }
       }
@@ -1583,9 +1703,22 @@ ion-modal.language-selector-modal {
 
 /* Popover arrow and positioning */
 ion-popover {
-  --background: #ffffff;
+  --background: rgba(255, 255, 255, 0.95);
   --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   --border-radius: 12px;
+  --width: 80vw; /* 80% of viewport width */
+  --max-width: 400px; /* Maximum width for larger screens */
+  --min-width: 280px; /* Minimum width for readability */
+  
+  /* Mobile-specific adjustments */
+  @media (max-width: 768px) {
+    --width: 85vw; /* Slightly wider on small screens */
+    --max-width: none; /* Remove max-width constraint on mobile */
+  }
+  
+  @media (max-width: 480px) {
+    --width: 90vw; /* Even wider on very small screens */
+  }
 }
 
 /* Pulse animation for audio indicator */
