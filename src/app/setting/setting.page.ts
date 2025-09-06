@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonIcon, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonIcon, IonButtons, IonMenuButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
 import { ThemeService, ThemeType, ThemeOption } from '../services/theme.service';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -12,7 +12,7 @@ import { colorPaletteOutline, settingsOutline, brushOutline, checkmarkCircle } f
   templateUrl: './setting.page.html',
   styleUrls: ['./setting.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardTitle, CommonModule, FormsModule]
+  imports: [IonContent, IonHeader, IonButtons, IonMenuButton, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, IonIcon, IonCard, IonCardContent, IonCardHeader, IonCardTitle, CommonModule, FormsModule]
 })
 export class SettingPage implements OnInit, OnDestroy {
   @HostBinding('class') themeClass = '';

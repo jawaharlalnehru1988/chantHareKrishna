@@ -465,6 +465,42 @@ ion-popover.sound-popover {
   }
 }
 
+/* Global Header Transparency Override */
+.chant-page {
+  ion-header {
+    background: transparent !important;
+    --background: transparent !important;
+    
+    ion-toolbar {
+      --background: transparent !important;
+      --color: white !important;
+      background: transparent !important;
+      color: white !important;
+      
+      ion-title {
+        color: white !important;
+      }
+      
+      ion-buttons {
+        ion-button {
+          color: white !important;
+        }
+        
+        ion-menu-button {
+          color: white !important;
+        }
+        
+        .language-dropdown {
+          .theme-select {
+            color: white !important;
+            --color: white !important;
+          }
+        }
+      }
+    }
+  }
+}
+
 /* Host Theme Styles */
 :host.theme-ocean {
   ion-header {
@@ -812,6 +848,7 @@ ion-popover.sound-popover {
   /* Ensure FAB button maintains standard size */
   width: 56px !important;
   height: 56px !important;
+      border-radius: 50%;
   
   /* Theme-specific icon colors */
   &.theme-ocean .sound-icon {
@@ -842,11 +879,36 @@ ion-popover.sound-popover {
 /* Base Chant Page Styles */
 .chant-page {
   min-height: 100vh;
+  padding-top: var(--ion-safe-area-top, 0) !important; /* Add safe area padding */
+  
+  /* Ensure header is always transparent */
+  ion-header {
+    background: transparent !important;
+    --background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    
+    &::before {
+      display: none !important; /* Remove any pseudo-element backgrounds */
+    }
+    
+    ion-toolbar {
+      --background: transparent !important;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      
+      &::before {
+        display: none !important; /* Remove any pseudo-element backgrounds */
+      }
+    }
+  }
 }
 
 /* Main Container */
 .chant-container {
   padding: 20px;
+  padding-top: 80px; /* Add extra padding to avoid header overlap */
   padding-bottom: 120px; // Space for chant button
   min-height: calc(100vh - 56px);
   display: flex;
@@ -1233,7 +1295,7 @@ ion-fab {
 /* FAB Controls Section */
 .fab-controls {
    position: fixed;
-    top: 70px;
+    top: calc(var(--ion-safe-area-top, 0px) + 70px); /* Position below the header */
     left: 0;
     right: 0;
     display: flex;
@@ -1304,6 +1366,14 @@ ion-fab.bonfire-fab {
 
 /* Medium screens (tablets) */
 @media (max-width: 768px) and (min-width: 481px) {
+  .chant-container {
+    padding-top: 80px; /* Add padding to avoid header overlap on tablets */
+  }
+  
+  .fab-controls {
+    top: calc(var(--ion-safe-area-top, 0px) + 65px); /* Adjust for tablet header height */
+  }
+  
   .stats-container {
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
@@ -1325,6 +1395,17 @@ ion-fab.bonfire-fab {
 
 /* Responsive Design */
 @media (max-width: 480px) {
+  .chant-container {
+    padding-top: 90px; /* Increase padding for mobile to avoid header overlap */
+    padding: 10px; /* Reduce side padding on mobile */
+    padding-bottom: 100px; /* Reduce padding for smaller button */
+  }
+  
+  .fab-controls {
+    top: calc(var(--ion-safe-area-top, 0px) + 70px); /* Adjust for mobile header height */
+    padding: 0 12px; /* Reduce side padding */
+  }
+  
   .stats-container {
     grid-template-columns: repeat(3, 1fr); /* Keep 3 columns on mobile */
     gap: 8px; /* Reduce gap */
@@ -1376,14 +1457,21 @@ ion-fab.bonfire-fab {
       font-size: 10px;
     }
   }
-  
-  .chant-container {
-    padding-bottom: 100px; /* Reduce padding for smaller button */
-  }
 }
 
 /* Extra small screens */
 @media (max-width: 360px) {
+  .chant-container {
+    padding: 15px;
+    padding-top: 85px; /* Even more padding for very small screens */
+    padding-bottom: 85px;
+  }
+  
+  .fab-controls {
+    top: calc(var(--ion-safe-area-top, 0px) + 58px); /* Adjust for small screen header */
+    padding: 0 10px; /* Reduce padding further */
+  }
+  
   .stats-container {
     grid-template-columns: repeat(3, 1fr); /* Still keep 3 columns */
     gap: 5px; /* Even smaller gap */
@@ -1426,11 +1514,6 @@ ion-fab.bonfire-fab {
   .progress-ring {
     width: 140px;
     height: 140px;
-  }
-  
-  .chant-container {
-    padding: 15px;
-    padding-bottom: 85px;
   }
 }
 

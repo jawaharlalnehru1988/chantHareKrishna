@@ -752,30 +752,89 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       // Add error handlers
       this.tickAudio.addEventListener('error', (e) => {
         console.warn('Tick audio failed to load:', e);
+        this.handleAudioError('tick', e);
       });
       
       this.prabhupadaAudio.addEventListener('error', (e) => {
         console.warn('Prabhupada audio failed to load:', e);
+        this.handleAudioError('prabhupada', e);
       });
       
       this.continuousAudio.addEventListener('error', (e) => {
         console.warn('Continuous audio failed to load:', e);
+        this.handleAudioError('continuous', e);
       });
       
       this.bellAudio.addEventListener('error', (e) => {
         console.warn('Bell audio failed to load:', e);
+        this.handleAudioError('bell', e);
       });
       
       this.sriKrishnaCaitanyaAudio.addEventListener('error', (e) => {
         console.warn('Sri Krishna Caitanya audio failed to load:', e);
+        this.handleAudioError('sriKrishnaCaitanya', e);
       });
       
       this.prabhupadaMantraAudio.addEventListener('error', (e) => {
         console.warn('Prabhupada Mantra audio failed to load:', e);
+        this.handleAudioError('prabhupadaMantra', e);
       });
+      
+      // Try to initialize audio context for mobile browsers
+      this.initializeAudioContext();
       
     } catch (error) {
       console.warn('Audio initialization failed:', error);
+    }
+  }
+
+  // Initialize audio context for mobile browsers
+  private initializeAudioContext() {
+    try {
+      if (typeof window !== 'undefined' && 'AudioContext' in window) {
+        const audioContext = new (window as any).AudioContext();
+        
+        // Resume audio context if suspended (common on mobile)
+        if (audioContext.state === 'suspended') {
+          // Add a click event listener to resume audio context on first user interaction
+          const resumeAudio = () => {
+            audioContext.resume().then(() => {
+              console.log('Audio context resumed on user interaction');
+            }).catch((e: any) => {
+              console.warn('Failed to resume audio context:', e);
+            });
+            // Remove the event listener after first interaction
+            document.removeEventListener('click', resumeAudio);
+            document.removeEventListener('touchend', resumeAudio);
+          };
+          
+          document.addEventListener('click', resumeAudio);
+          document.addEventListener('touchend', resumeAudio);
+        }
+      }
+    } catch (error) {
+      console.warn('Audio context initialization failed:', error);
+    }
+  }
+  
+  // Handle audio loading errors
+  private handleAudioError(audioType: string, error: any) {
+    console.error(`${audioType} audio error:`, error);
+    
+    // You could implement fallback logic here, such as:
+    // - Showing a user notification
+    // - Retrying audio load
+    // - Disabling sound options that failed to load
+    
+    if (audioType === 'tick' && this.currentSoundMode === 'tick') {
+      console.warn('Tick audio failed, switching to silent mode');
+      this.currentSoundMode = 'none';
+    } else if (audioType === 'prabhupada' && this.currentSoundMode === 'prabhupada') {
+      console.warn('Prabhupada audio failed, switching to silent mode');
+      this.currentSoundMode = 'none';
+    } else if (audioType === 'continuous' && this.currentSoundMode === 'continuous') {
+      console.warn('Continuous audio failed, switching to silent mode');
+      this.currentSoundMode = 'none';
     }
   }
 
@@ -811,6 +870,9 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
 
   // Main chanting action
   chant() {
+    // Enable audio context for mobile (must be called on user interaction)
+    this.enableAudioContext();
+    
     // If Prabhupada audio is playing, block the click
     if (this.isAudioPlaying && this.currentSoundMode === 'prabhupada') {
       return; // Don't process the click
@@ -859,20 +921,39 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       } else if (this.currentSoundMode === 'tick' && this.tickAudio) {
         // Reset the audio to beginning and play
         this.tickAudio.currentTime = 0;
-        this.tickAudio.play().catch(e => console.warn('Tick audio play failed:', e));
+        // For mobile compatibility, ensure we handle play promise
+        const playPromise = this.tickAudio.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Audio played successfully
+              console.log('Tick audio played successfully');
+            })
+            .catch(e => {
+              console.warn('Tick audio play failed:', e);
+              // Try to enable audio context on mobile
+              this.enableAudioContext();
+            });
+        }
       } else if (this.currentSoundMode === 'prabhupada' && this.prabhupadaAudio) {
         // Only play if not already playing
         if (!this.isAudioPlaying) {
           this.isAudioPlaying = true;
           this.prabhupadaAudio.currentTime = 0;
-          this.prabhupadaAudio.play()
-            .then(() => {
-              // Audio started playing successfully
-            })
-            .catch(e => {
-              console.warn('Prabhupada audio play failed:', e);
-              this.isAudioPlaying = false; // Reset flag if play failed
-            });
+          const playPromise = this.prabhupadaAudio.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                // Audio started playing successfully
+                console.log('Prabhupada audio played successfully');
+              })
+              .catch(e => {
+                console.warn('Prabhupada audio play failed:', e);
+                this.isAudioPlaying = false; // Reset flag if play failed
+                // Try to enable audio context on mobile
+                this.enableAudioContext();
+              });
+          }
         }
       } else if (this.currentSoundMode === 'continuous' && this.continuousAudio) {
         // Toggle play/pause for continuous mode
@@ -882,6 +963,27 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       console.warn('Audio playback error:', error);
       this.isAudioPlaying = false; // Reset flag on error
       this.isContinuousPlaying = false; // Reset continuous flag on error
+      // Try to enable audio context on mobile
+      this.enableAudioContext();
+    }
+  }
+  
+  // Enable audio context for mobile browsers
+  private enableAudioContext() {
+    try {
+      // Create or resume audio context for mobile browsers
+      if (typeof window !== 'undefined' && 'AudioContext' in window) {
+        const audioContext = new (window as any).AudioContext();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume().then(() => {
+            console.log('Audio context resumed for mobile');
+          }).catch((e: any) => {
+            console.warn('Failed to resume audio context:', e);
+          });
+        }
+      }
+    } catch (error) {
+      console.warn('Audio context initialization failed:', error);
     }
   }
 
@@ -1086,6 +1188,31 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     
     this.currentSoundMode = soundMode;
     this.saveProgress();
+    
+    // Test play the sound immediately when mode is selected (mobile compatibility)
+    this.testPlaySound(soundMode);
+  }
+  
+  // Test play sound when mode is selected (helps with mobile audio permissions)
+  private testPlaySound(soundMode: ChantSoundType) {
+    try {
+      if (soundMode === 'tick' && this.tickAudio) {
+        // Play a very short test sound
+        this.tickAudio.currentTime = 0;
+        this.tickAudio.play().catch(e => console.warn('Test tick audio failed:', e));
+      } else if (soundMode === 'prabhupada' && this.prabhupadaAudio && !this.isAudioPlaying) {
+        // Just prepare the audio, don't play it yet
+        this.prabhupadaAudio.currentTime = 0;
+        // On mobile, we can't play without user interaction, so just prepare
+        this.prabhupadaAudio.load();
+      } else if (soundMode === 'continuous' && this.continuousAudio) {
+        // Just prepare the audio, don't start continuous mode yet
+        this.continuousAudio.currentTime = 0;
+        this.continuousAudio.load();
+      }
+    } catch (error) {
+      console.warn('Test play sound error:', error);
+    }
   }
 
   // Get current daily goal progress percentage

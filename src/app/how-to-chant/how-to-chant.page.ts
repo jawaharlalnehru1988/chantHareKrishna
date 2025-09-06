@@ -1,19 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
 import { LanguageService, LanguageType } from '../services/language.service';
 import { ThemeService } from '../services/theme.service';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { checkmarkCircleOutline, informationCircleOutline, language } from 'ionicons/icons';
+import { checkmarkCircleOutline, informationCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-how-to-chant',
   templateUrl: './how-to-chant.page.html',
   styleUrls: ['./how-to-chant.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonButtons]
+  imports: [IonContent, IonHeader, IonToolbar, CommonModule, FormsModule, IonMenuButton, IonButtons]
 })
 export class HowToChantPage implements OnInit, OnDestroy {
   
