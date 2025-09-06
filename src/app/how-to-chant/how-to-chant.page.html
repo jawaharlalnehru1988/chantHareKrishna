@@ -4,15 +4,12 @@
       <!-- <ion-back-button defaultHref="/"></ion-back-button> -->
        <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
+    <ion-title>How to Chant</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">how-to-chant</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" [class]="">
+  <div class="guide-container">
+    <div class="guide-content" [innerHTML]="currentGuide.content"></div>
+  </div>
 </ion-content>
-
-

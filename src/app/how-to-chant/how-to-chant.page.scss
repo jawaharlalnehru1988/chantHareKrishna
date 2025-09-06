@@ -1,0 +1,21 @@
+
+
+.guide-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .guide-container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .guide-container {
+    padding: 10px;
+  }
+  
+}
