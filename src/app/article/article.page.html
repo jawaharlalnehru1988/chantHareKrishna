@@ -1,0 +1,207 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Articles</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/folder/Home"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-chip class="language-indicator" [color]="getLanguageColor(currentLanguage)">
+        <ion-icon name="language" slot="start"></ion-icon>
+        <ion-label>{{ currentLanguage | titlecase }}</ion-label>
+      </ion-chip>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Articles</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading articles...</p>
+  </div>
+
+  <!-- Error State -->
+  <ion-card *ngIf="error() && !isLoading()" class="error-card">
+    <ion-card-content>
+      <ion-icon name="warning-outline" color="danger"></ion-icon>
+      <p>{{ error() }}</p>
+      <ion-button (click)="refreshArticles()" fill="outline" color="primary">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Retry
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Articles Grid -->
+  <div class="articles-container" *ngIf="!isLoading() && !error()">
+    <!-- Cache Info and Refresh Button (only show if has data) -->
+    <div *ngIf="hasData()" class="cache-info-container">
+      <div class="cache-info">
+        <ion-chip color="medium" size="small">
+          <ion-icon name="time-outline"></ion-icon>
+          <ion-label>{{ filteredArticles().length }} articles</ion-label>
+        </ion-chip>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          (click)="refreshArticles()"
+          [disabled]="isLoading()">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="articles-grid">
+      <ion-card 
+        *ngFor="let article of filteredArticles()" 
+        class="article-card" 
+        (click)="openArticle(article)"
+        button>
+        
+        <!-- Article Image -->
+        <div class="article-image-container">
+          <img 
+            [src]="article.chantImageUrl" 
+            [alt]="article.chantTitle"
+            class="article-image"
+            (error)="onImageError($event)">
+          <div class="article-duration">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ formatDuration(article.duration) }}
+          </div>
+        </div>
+
+        <ion-card-content class="article-content">
+          <!-- Title -->
+          <h2 class="article-title">{{ article.chantTitle }}</h2>
+          
+          <!-- Author -->
+          <p class="article-author">
+            <ion-icon name="person-outline"></ion-icon>
+            {{ article.author }}
+          </p>
+
+          <!-- Language Badge -->
+          <ion-chip class="language-chip" [color]="getLanguageColor(article.language)">
+            <ion-icon name="language-outline"></ion-icon>
+            <ion-label>{{ article.language | titlecase }}</ion-label>
+          </ion-chip>
+
+          <!-- Tags -->
+          <div class="tags-container" *ngIf="article.tags && article.tags.length > 0">
+            <ion-chip 
+              *ngFor="let tag of article.tags.slice(0, 3)" 
+              class="tag-chip" 
+              outline="true">
+              {{ tag }}
+            </ion-chip>
+          </div>
+
+          <!-- Views and Date -->
+          <div class="article-meta">
+            <span class="views">
+              <ion-icon name="eye-outline"></ion-icon>
+              {{ article.views }} views
+            </span>
+            <span class="date">{{ formatDate(article.createdAt) }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredArticles().length === 0 && hasData()" class="empty-state">
+      <ion-icon name="document-text-outline" size="large"></ion-icon>
+      <h3>No Articles Found</h3>
+      <p>No articles available in {{ currentLanguage | titlecase }}. Try switching to another language or check back later for new content.</p>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Article Modal -->
+<ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ selectedArticle?.chantTitle }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="modal-content" *ngIf="selectedArticle">
+      <!-- Article Header -->
+      <div class="modal-article-header">
+        <img 
+          [src]="selectedArticle.chantImageUrl" 
+          [alt]="selectedArticle.chantTitle"
+          class="modal-article-image"
+          (error)="onImageError($event)">
+        
+        <div class="modal-article-info">
+          <h1>{{ selectedArticle.chantTitle }}</h1>
+          
+          <div class="modal-meta">
+            <p class="modal-author">
+              <ion-icon name="person"></ion-icon>
+              {{ selectedArticle.author }}
+            </p>
+            
+            <div class="modal-badges">
+              <ion-chip [color]="getLanguageColor(selectedArticle.language)">
+                <ion-icon name="language"></ion-icon>
+                <ion-label>{{ selectedArticle.language | titlecase }}</ion-label>
+              </ion-chip>
+              
+              <ion-chip color="medium">
+                <ion-icon name="time"></ion-icon>
+                <ion-label>{{ formatDuration(selectedArticle.duration) }}</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Content -->
+      <div class="modal-article-content">
+        <div [innerHTML]="selectedArticle.chantContent" class="article-html-content"></div>
+      </div>
+
+      <!-- Article Footer -->
+      <div class="modal-article-footer">
+        <div class="tags-section" *ngIf="selectedArticle.tags && selectedArticle.tags.length > 0">
+          <h4>Tags:</h4>
+          <ion-chip *ngFor="let tag of selectedArticle.tags" outline="true">
+            {{ tag }}
+          </ion-chip>
+        </div>
+        
+        <div class="article-stats">
+          <span class="views">
+            <ion-icon name="eye"></ion-icon>
+            {{ selectedArticle.views }} views
+          </span>
+          <span class="date">Published: {{ formatDate(selectedArticle.createdAt) }}</span>
+        </div>
+
+        <!-- Audio Player (if audio URL exists) -->
+        <div class="audio-section" *ngIf="selectedArticle.chantAudioUrl">
+          <h4>Listen to Audio:</h4>
+          <audio controls class="audio-player">
+            <source [src]="selectedArticle.chantAudioUrl" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public appPages = [
     { title: 'Chant', url: '/chant', icon: 'heart', titleKey: 'chantMenuItem' as keyof AppContent },
     { title: 'How to Chant', url: '/how-to-chant', icon: 'paper-plane', titleKey: 'howToChantMenuItem' as keyof AppContent },
-    { title: 'Prabhupada on Chanting', url: '/prabhupada-on-chanting', icon: 'bookmark', titleKey: 'prabhupadaMenuItem' as keyof AppContent },
+    { title: 'Article', url: '/article', icon: 'bookmark', titleKey: 'articleMenuItem' as keyof AppContent },
     { title: 'Benefits of Chanting', url: '/benefits-of-chanting', icon: 'archive', titleKey: 'benefitsMenuItem' as keyof AppContent },
     { title: 'Settings', url: '/setting', icon: 'settings-outline', titleKey: 'settingsMenuItem' as keyof AppContent },
   ];
