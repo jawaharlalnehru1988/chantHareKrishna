@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, settingsOutline, languageOutline } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, settingsOutline, languageOutline, radioOutline, chatbubblesOutline, documentTextOutline } from 'ionicons/icons';
 import { ThemeService } from './services/theme.service';
 import { LanguageService, LanguageType, AppContent } from './services/language.service';
 import { Subscription } from 'rxjs';
@@ -22,9 +22,9 @@ export class AppComponent implements OnInit, OnDestroy {
   content: AppContent = {} as AppContent;
   
   public appPages = [
-    { title: 'Chant', url: '/chant', icon: 'heart', titleKey: 'chantMenuItem' as keyof AppContent },
-    { title: 'How to Chant', url: '/how-to-chant', icon: 'paper-plane', titleKey: 'howToChantMenuItem' as keyof AppContent },
-    { title: 'Article', url: '/article', icon: 'bookmark', titleKey: 'articleMenuItem' as keyof AppContent },
+    { title: 'Chant', url: '/chant', icon: 'radio-outline', titleKey: 'chantMenuItem' as keyof AppContent },
+    { title: 'How to Chant', url: '/how-to-chant', icon: 'chatbubbles-outline', titleKey: 'howToChantMenuItem' as keyof AppContent },
+    { title: 'Article', url: '/article', icon: 'document-text-outline', titleKey: 'document-text-outline' as keyof AppContent },
     { title: 'Settings', url: '/setting', icon: 'settings-outline', titleKey: 'settingsMenuItem' as keyof AppContent },
   ];
   
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private languageSubscription: Subscription = new Subscription();
 
   constructor(private themeService: ThemeService, private languageService: LanguageService) {
-    addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, settingsOutline, languageOutline });
+    addIcons({ mailOutline, chatbubblesOutline, documentTextOutline, radioOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, settingsOutline, languageOutline });
   }
 
   ngOnInit() {

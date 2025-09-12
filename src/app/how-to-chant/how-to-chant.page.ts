@@ -56,7 +56,6 @@ export class HowToChantPage implements OnInit, OnDestroy {
     {
       language: 'english' as LanguageType,
       content: `<h1>🌼 <strong>How to Use This Application for Chanting the Hare Krishna Mahamantra</strong></h1>
-      <img src="assets/images/chantPage.png" alt="Chanting Page Screenshot" style="width:100%;max-width:400px;margin:10px 0;">
       <p>When you <strong>open the application</strong> 📱, you will first see an interface that looks like this:</p><p>Although this page is quite <strong>self-explanatory</strong>, I would still like to give you a <strong>brief overview</strong> 📝.<br>
 This will help you <strong>use the application in the proper sequence of chanting</strong>, following the <strong>traditional method</strong> of chanting the Hare Krishna Mahamantra as taught by <strong>His Divine Grace A.C. Bhaktivedanta Swami Srila Prabhupada</strong> and the <strong>previous acharyas</strong> (spiritual teachers). 🙏</p>
 
@@ -274,7 +273,6 @@ This gives you a <strong>clear visual sense of progress</strong>, keeping you <s
  {
   language: 'tamil' as LanguageType,
   content: `<h1>🌸 ஹரே கிருஷ்ண மஹாமந்திரத்தை ஜபிக்க இந்த செயலியை(app) எப்படி பயன்படுத்துவது? 🌸</h1><h1><!--StartFragment-->
-      <img src="assets/images/chantPage.png" alt="Chanting Page Screenshot" style="width:100%;max-width:400px;margin:10px 0;">
   <p>இந்த&nbsp;<span style="font-size: 1.625rem; color: rgb(255, 255, 255);">செயலியை&nbsp;</span><span style="font-size: 1.625rem; color: rgb(255, 255, 255);">திறந்தவுடன், நீங்கள் முதலில் இவ்வாறு காணப்படும் ஒரு இடைமுகத்தை (interface) காண்பீர்கள். 🖥️</span></p></h1><h1>
 <p>இப்பக்கம் தன்னிச்சையாகவே விளக்கமாக இருக்கும், ஆனால் நீங்கள் <strong>ஸ்ரீல பிரபுபாதர்</strong> மற்றும் முன்னோடி ஆச்சார்யர்கள் கற்றுக் கொடுத்த பாரம்பரிய முறையில், சரியான முறையில் ஹரே கிருஷ்ண மஹாமந்திரத்தை ஜபிப்பதற்காக ஒரு சிறிய விளக்கத்தை நான் தர விரும்புகிறேன். 🙏</p>
 
