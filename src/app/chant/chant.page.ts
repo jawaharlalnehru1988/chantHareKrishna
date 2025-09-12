@@ -689,34 +689,37 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   // Initialize audio elements
   initializeAudio() {
     try {
+      // Get the base URL for assets - works in both browser and Capacitor
+      const baseUrl = window.location.origin + '/';
+      
       // Initialize tick sound
-      this.tickAudio = new Audio('assets/music/single-tick.mp3');
+      this.tickAudio = new Audio(baseUrl + 'assets/music/single-tick.mp3');
       this.tickAudio.preload = 'auto';
       this.tickAudio.volume = 0.7;
       
       // Initialize Prabhupada chanting
-      this.prabhupadaAudio = new Audio('assets/music/SrilaPrabhupadaChanting.mp3');
+      this.prabhupadaAudio = new Audio(baseUrl + 'assets/music/SrilaPrabhupadaChanting.mp3');
       this.prabhupadaAudio.preload = 'auto';
       this.prabhupadaAudio.volume = 0.8;
       
       // Initialize continuous Prabhupada chanting
-      this.continuousAudio = new Audio('assets/music/SrilaPrabhupadaChanting.mp3');
+      this.continuousAudio = new Audio(baseUrl + 'assets/music/SrilaPrabhupadaChanting.mp3');
       this.continuousAudio.preload = 'auto';
       this.continuousAudio.volume = 0.8;
       this.continuousAudio.loop = true; // Enable looping for continuous play
       
       // Initialize bell sound for round completion
-      this.bellAudio = new Audio('assets/music/bellshort.mp3');
+      this.bellAudio = new Audio(baseUrl + 'assets/music/bellshort.mp3');
       this.bellAudio.preload = 'auto';
       this.bellAudio.volume = 0.9;
       
       // Initialize Sri Krishna Caitanya audio
-      this.sriKrishnaCaitanyaAudio = new Audio('assets/music/sriKrishnaChaitanya.mp3');
+      this.sriKrishnaCaitanyaAudio = new Audio(baseUrl + 'assets/music/sriKrishnaChaitanya.mp3');
       this.sriKrishnaCaitanyaAudio.preload = 'auto';
       this.sriKrishnaCaitanyaAudio.volume = 0.8;
       
       // Initialize Prabhupada Mantra audio
-      this.prabhupadaMantraAudio = new Audio('assets/music/Prabhupada mantra.mp3');
+      this.prabhupadaMantraAudio = new Audio(baseUrl + 'assets/music/Prabhupada mantra.mp3');
       this.prabhupadaMantraAudio.preload = 'auto';
       this.prabhupadaMantraAudio.volume = 0.8;
       

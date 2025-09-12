@@ -7,7 +7,6 @@ import {
   IonTitle, 
   IonToolbar, 
   IonButtons, 
-  IonBackButton,
   IonCard, 
   IonCardContent, 
   IonSpinner, 
@@ -15,6 +14,7 @@ import {
   IonButton,
   IonChip,
   IonLabel,
+  IonMenuButton,
   IonModal
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -49,9 +49,9 @@ import { LanguageService, LanguageType } from '../services/language.service';
     IonTitle, 
     IonToolbar, 
     IonButtons,
-    IonBackButton,
     IonCard,
     IonCardContent,
+    IonMenuButton,
     IonSpinner,
     IonIcon,
     IonButton,
