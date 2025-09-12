@@ -78,7 +78,8 @@ interface SoundOption {
     IonFab,
     IonFabButton,
     IonSelect,
-    IonSelectOption, IonMenuButton]
+    IonSelectOption,
+    IonMenuButton]
 })
 export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
 
@@ -663,6 +664,18 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
 
   chantSrilaPrabhupadaMantra() {
     try {
+      // Don't allow playing if Sri Krishna Caitanya is already playing
+      if (this.isSriKrishnaCaitanyaPlaying) {
+        return;
+      }
+      
+      // Stop Sri Krishna Caitanya if it's playing
+      if (this.sriKrishnaCaitanyaAudio && !this.sriKrishnaCaitanyaAudio.paused) {
+        this.sriKrishnaCaitanyaAudio.pause();
+        this.isSriKrishnaCaitanyaPlaying = false;
+        this.showSriKrishnaCaitanyaModal = false;
+      }
+      
       if (this.prabhupadaMantraAudio) {
         this.prabhupadaMantraAudio.currentTime = 0;
         
@@ -1064,6 +1077,17 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   // Play Sri Krishna Caitanya audio
   playSriKrishnaCaitanyaAudio() {
     try {
+      // Don't allow playing if Prabhupada Mantra is already playing
+      if (this.isPrabhupadaMantraPlaying) {
+        return;
+      }
+      
+      // Stop Prabhupada Mantra if it's playing
+      if (this.prabhupadaMantraAudio && !this.prabhupadaMantraAudio.paused) {
+        this.prabhupadaMantraAudio.pause();
+        this.isPrabhupadaMantraPlaying = false;
+      }
+      
       if (this.sriKrishnaCaitanyaAudio) {
         this.sriKrishnaCaitanyaAudio.currentTime = 0;
         

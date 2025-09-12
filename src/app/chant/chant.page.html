@@ -30,11 +30,10 @@
   <div class="chant-container">
     <!-- Krishna Image/Symbol -->
     <div class="krishna-symbol">
-      <ion-icon name="flower-outline" size="large"></ion-icon>
-      @if (isSriKrishnaCaitanyaPlaying) {
+      @if (isSriKrishnaCaitanyaPlaying && !isPrabhupadaMantraPlaying) {
         <section style="color: rgb(250, 216, 122);">{{content.sriKrishnaCaitanyaMantra}}</section>
       } 
-      @if (isPrabhupadaMantraPlaying) {
+      @if (isPrabhupadaMantraPlaying && !isSriKrishnaCaitanyaPlaying) {
         <section style="color: rgb(250, 216, 122);">{{content.prabhupadaMantra1}}</section>
         <section style="color: rgb(250, 216, 122);">{{content.prabhupadaMantra2}}</section>
       } 
@@ -179,6 +178,7 @@
         <ion-fab style="position: static; pointer-events: auto;">
           <ion-fab-button
             color="tertiary"
+            [disabled]="isPrabhupadaMantraPlaying"
             (click)="playSriKrishnaCaitanyaAudio()">
             <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751945325/8761009fc82487aec3b4145403b99b79_eeppak.jpg" alt="Krishna" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
           </ion-fab-button>
@@ -213,10 +213,11 @@
         <ion-fab style="position: static; pointer-events: auto;">
           <ion-fab-button
             color="primary"
+            [disabled]="isSriKrishnaCaitanyaPlaying"
             (click)="chantSrilaPrabhupadaMantra()"
             id="language-trigger"
             >
-            <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751699506/chanting3_jry6ie.jpg" alt="Srila prabhupada" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+            <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1757645386/prabhupadaChanting_kh5wui.jpg" alt="Srila prabhupada" style="width: 50px; height: 50px; border-radius: 50%;">
             <!-- <ion-icon name="language-outline"></ion-icon> -->
           </ion-fab-button>
         </ion-fab>
