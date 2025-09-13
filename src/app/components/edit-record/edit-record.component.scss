@@ -1,0 +1,250 @@
+/* Edit Record Component - Theme Independent Styling */
+
+/* Header Styling */
+ion-header {
+  ion-toolbar {
+    --background: #3880ff !important;
+    --color: #ffffff !important;
+    
+    ion-title {
+      color: #ffffff !important;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      ion-icon {
+        color: #ffffff !important;
+      }
+    }
+    
+    ion-button {
+      --color: #ffffff !important;
+      
+      ion-icon {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+/* Content Styling */
+ion-content {
+  --background: #f8f9fa !important;
+  --color: #333333 !important;
+}
+
+.edit-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Current Info Card */
+.current-info-card {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  
+  ion-card-content {
+    padding: 16px;
+    
+    h3 {
+      color: #3880ff !important;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+    }
+    
+    p {
+      color: #333333 !important;
+      font-size: 0.9rem;
+      margin: 4px 0;
+      
+      strong {
+        color: #666666 !important;
+      }
+    }
+  }
+}
+
+/* Form Items Styling */
+.form-item {
+  margin-bottom: 20px;
+  --background: #ffffff !important;
+  --color: #333333 !important;
+  --border-color: #e0e0e0 !important;
+  --border-width: 1px !important;
+  --border-style: solid !important;
+  --border-radius: 8px !important;
+  --padding-start: 16px !important;
+  --padding-end: 16px !important;
+  --min-height: 70px !important;
+  
+  ion-label {
+    font-weight: 600;
+    color: #333333 !important;
+    margin-bottom: 8px;
+    
+    ion-icon {
+      margin-right: 8px;
+      color: #3880ff !important;
+      font-size: 18px;
+    }
+  }
+  
+  &.item-has-focus {
+    --border-color: #3880ff !important;
+    --border-width: 2px !important;
+    box-shadow: 0 0 0 2px rgba(56, 128, 255, 0.2) !important;
+  }
+}
+
+/* Date Picker Styling */
+.date-picker {
+  --background: #f8f9fa !important;
+  --color: #333333 !important;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Select Styling */
+.rounds-select {
+  --color: #333333 !important;
+  --placeholder-color: #666666 !important;
+  background: #f8f9fa !important;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+}
+
+ion-select {
+  --color: #333333 !important;
+  --placeholder-color: #666666 !important;
+}
+
+ion-select-option {
+  --color: #333333 !important;
+  --background: #ffffff !important;
+}
+
+/* Error Messages */
+.error-message {
+  color: #eb445a !important;
+  font-size: 0.875rem;
+  padding: 5px 15px;
+  margin: -10px 0 15px 0;
+  background: #ffeaea !important;
+  border-radius: 6px;
+  border-left: 3px solid #eb445a;
+}
+
+/* Info Box */
+.info-box {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 20px 0;
+  
+  p {
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    color: #3880ff !important;
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    
+    li {
+      margin-bottom: 6px;
+      color: #333333 !important;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+  }
+}
+
+/* Action Buttons */
+.action-buttons {
+  margin-top: 30px;
+  
+  ion-button {
+    margin-bottom: 12px;
+    font-weight: 600;
+    --border-radius: 8px !important;
+    height: 48px;
+    
+    &[color="primary"] {
+      --background: #3880ff !important;
+      --color: #ffffff !important;
+    }
+    
+    &[fill="outline"] {
+      --color: #666666 !important;
+      --border-color: #cccccc !important;
+      --background: #ffffff !important;
+    }
+    
+    &[disabled] {
+      --opacity: 0.6 !important;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+/* Toast Styling */
+ion-toast {
+  --border-radius: 8px !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .edit-container {
+    padding: 16px;
+  }
+  
+  .form-item {
+    --padding-start: 12px !important;
+    --padding-end: 12px !important;
+    --min-height: 60px !important;
+  }
+  
+  .current-info-card {
+    margin-bottom: 20px;
+    
+    ion-card-content {
+      padding: 12px;
+      
+      h3 {
+        font-size: 1rem;
+      }
+      
+      p {
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+/* Form Validation States */
+ion-item.ion-invalid.ion-touched {
+  --border-color: #eb445a !important;
+  --border-width: 2px !important;
+}
+
+ion-item.ion-valid.ion-touched {
+  --border-color: #2dd36f !important;
+  --border-width: 2px !important;
+}

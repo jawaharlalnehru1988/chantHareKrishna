@@ -1,0 +1,141 @@
+<!-- Chart Controls -->
+<div class="chart-controls">
+  <ion-segment [value]="selectedPeriod()" (ionChange)="onPeriodChange($event)">
+    <ion-segment-button value="week">
+      <ion-label>Week</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="month">
+      <ion-label>Month</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="year">
+      <ion-label>Year</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-button fill="clear" (click)="refreshChart()" [disabled]="isLoading()">
+    <ion-icon name="refresh-outline"></ion-icon>
+  </ion-button>
+</div>
+
+<!-- Chart Summary Stats -->
+<ion-card class="chart-summary">
+  <ion-card-content>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <ion-icon name="trending-up-outline" color="success"></ion-icon>
+        <div class="summary-info">
+          <div class="summary-value">{{ getChartSummary().total }}</div>
+          <div class="summary-label">Total Rounds</div>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <ion-icon name="stats-chart-outline" color="primary"></ion-icon>
+        <div class="summary-info">
+          <div class="summary-value">{{ getChartSummary().average }}</div>
+          <div class="summary-label">Average</div>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <ion-icon name="trophy-outline" color="warning"></ion-icon>
+        <div class="summary-info">
+          <div class="summary-value">{{ getChartSummary().highest }}</div>
+          <div class="summary-label">Best Day</div>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <ion-icon name="flame-outline" color="danger"></ion-icon>
+        <div class="summary-info">
+          <div class="summary-value">{{ getChartSummary().streak }}</div>
+          <div class="summary-label">Streak</div>
+        </div>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- Chart Container -->
+<ion-card class="chart-container">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="stats-chart-outline"></ion-icon>
+      {{ selectedPeriod() === 'week' ? 'Weekly' : selectedPeriod() === 'month' ? 'Monthly' : 'Yearly' }} Progress
+    </ion-card-title>
+  </ion-card-header>
+  
+  <ion-card-content>
+    @if (isLoading()) {
+      <div class="loading-container">
+        <ion-icon name="refresh-outline" class="loading-icon"></ion-icon>
+        <p>Loading chart...</p>
+      </div>
+    } @else {
+      <div class="canvas-container" [style.height.px]="height">
+        <canvas #chartCanvas></canvas>
+      </div>
+    }
+    
+    <!-- Empty state -->
+    @if (chartData().length === 0 && !isLoading()) {
+      <div class="empty-state">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <h3>No Data Available</h3>
+        <p>Start chanting to see your progress here!</p>
+      </div>
+    }
+  </ion-card-content>
+</ion-card>
+
+<!-- Period-specific insights -->
+@if (selectedPeriod() === 'week') {
+  <ion-card class="insights-card">
+    <ion-card-content>
+      <div class="insight">
+        <ion-icon name="calendar-outline" color="primary"></ion-icon>
+        <div class="insight-text">
+          <strong>Weekly Insight:</strong>
+          @if (getChartSummary().average >= 16) {
+            Excellent! You're meeting your daily goal consistently. 🙏
+          } @else if (getChartSummary().average >= 8) {
+            Good progress! Try to increase your daily rounds. 📿
+          } @else {
+            Keep going! Every round counts in your spiritual journey. ✨
+          }
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+} @else if (selectedPeriod() === 'month') {
+  <ion-card class="insights-card">
+    <ion-card-content>
+      <div class="insight">
+        <ion-icon name="trending-up-outline" color="success"></ion-icon>
+        <div class="insight-text">
+          <strong>Monthly Insight:</strong>
+          @if (getChartSummary().streak >= 7) {
+            Amazing consistency! Your devotion is inspiring. 🌟
+          } @else if (getChartSummary().total >= 300) {
+            Strong commitment this month! Keep up the great work. 💪
+          } @else {
+            Building habits takes time. Stay dedicated! 🌱
+          }
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+} @else {
+  <ion-card class="insights-card">
+    <ion-card-content>
+      <div class="insight">
+        <ion-icon name="trophy-outline" color="warning"></ion-icon>
+        <div class="insight-text">
+          <strong>Yearly Insight:</strong>
+          Your spiritual journey shows beautiful patterns over time. 
+          Each day of chanting brings you closer to Krishna. 🕉️
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+}

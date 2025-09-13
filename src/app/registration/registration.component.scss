@@ -1,0 +1,256 @@
+/* Registration Component - Theme Independent Styling */
+.registration-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff !important;
+  color: #333333 !important;
+  min-height: 100vh;
+  display: block !important;
+  visibility: visible !important;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 30px;
+  display: block !important;
+  visibility: visible !important;
+  
+  h2 {
+    color: #3880ff !important;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  p {
+    color: #666666 !important;
+    font-size: 1rem;
+    line-height: 1.5;
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
+.contact-method-section {
+  margin: 20px 0;
+  
+  ion-label h3 {
+    font-size: 1rem;
+    color: #333333 !important;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+}
+
+.contact-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  
+  ion-button {
+    --color: #3880ff !important;
+    --background: #ffffff !important;
+    --border-color: #3880ff !important;
+    --border-width: 2px !important;
+    --border-style: solid !important;
+    font-weight: 600 !important;
+    
+    &[fill="solid"] {
+      --background: #3880ff !important;
+      --color: #ffffff !important;
+    }
+  }
+}
+
+.error-message {
+  color: #eb445a !important;
+  font-size: 0.875rem;
+  padding: 5px 15px;
+  margin-bottom: 10px;
+  background: #ffeaea !important;
+  border-radius: 6px;
+  border-left: 3px solid #eb445a;
+}
+
+.info-box {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  
+  p {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    color: #3880ff !important;
+  }
+  
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    
+    li {
+      margin-bottom: 5px;
+      color: #333333 !important;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.action-buttons {
+  margin-top: 30px;
+  
+  ion-button {
+    margin-bottom: 10px;
+    font-weight: 600;
+    --border-radius: 8px !important;
+    
+    &[color="primary"] {
+      --background: #3880ff !important;
+      --color: #ffffff !important;
+    }
+    
+    &[fill="outline"] {
+      --color: #666666 !important;
+      --border-color: #cccccc !important;
+      --background: #ffffff !important;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* Form Items Styling */
+ion-item {
+  margin-bottom: 15px;
+  --background: #ffffff !important;
+  --color: #333333 !important;
+  --border-color: #e0e0e0 !important;
+  --border-width: 1px !important;
+  --border-style: solid !important;
+  --border-radius: 8px !important;
+  --padding-start: 16px !important;
+  --padding-end: 16px !important;
+  --min-height: 60px !important;
+  
+  ion-label {
+    font-weight: 600;
+    color: #333333 !important;
+    
+    ion-icon {
+      margin-right: 8px;
+      color: #3880ff !important;
+      font-size: 18px;
+    }
+  }
+  
+  ion-input {
+    --color: #333333 !important;
+    --placeholder-color: #999999 !important;
+    font-size: 16px;
+  }
+}
+
+/* Focused state for form items */
+ion-item.item-has-focus {
+  --border-color: #3880ff !important;
+  --border-width: 2px !important;
+  box-shadow: 0 0 0 2px rgba(56, 128, 255, 0.2) !important;
+}
+
+/* Header Styling */
+ion-header {
+  ion-toolbar {
+    --background: #3880ff !important;
+    --color: #ffffff !important;
+    
+    ion-title {
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    
+    ion-button {
+      --color: #ffffff !important;
+      
+      ion-icon {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+/* Content Styling */
+ion-content {
+  --background: #f8f9fa !important;
+  --color: #333333 !important;
+  display: block !important;
+  visibility: visible !important;
+  min-height: 100vh;
+}
+
+/* Toast Styling */
+ion-toast {
+  --background: #333333 !important;
+  --color: #ffffff !important;
+  --border-radius: 8px !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .registration-container {
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .contact-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    
+    ion-button {
+      width: 100%;
+      margin: 4px 0;
+    }
+  }
+  
+  ion-item {
+    --padding-start: 12px !important;
+    --padding-end: 12px !important;
+    --min-height: 56px !important;
+  }
+  
+  .welcome-section {
+    margin-bottom: 20px;
+    
+    h2 {
+      font-size: 1.3rem;
+    }
+    
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Loading state */
+ion-button[disabled] {
+  --opacity: 0.6 !important;
+}
+
+/* Form validation states */
+ion-item.ion-invalid.ion-touched {
+  --border-color: #eb445a !important;
+  --border-width: 2px !important;
+}
+
+ion-item.ion-valid.ion-touched {
+  --border-color: #2dd36f !important;
+  --border-width: 2px !important;
+}

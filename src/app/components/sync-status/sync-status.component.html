@@ -1,0 +1,39 @@
+<ion-card class="sync-status-card">
+  <ion-card-content>
+    <div class="sync-status-container">
+      <!-- Sync Status Icon and Info -->
+      <div class="status-main">
+        <div class="status-icon" [attr.data-status]="syncStatus().type">
+          <ion-icon [name]="syncStatus().icon" [color]="syncStatus().color"></ion-icon>
+        </div>
+        <div class="status-info">
+          <div class="status-message">{{ syncStatus().message }}</div>
+          <div class="status-detail">{{ syncStatus().detail }}</div>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="status-actions">
+        @if (syncStatus().type === 'offline' && isOnline) {
+          <ion-button fill="clear" size="small" (click)="forceSyncNow()">
+            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        }
+        
+        @if (syncStatus().type === 'syncing') {
+          <ion-progress-bar type="indeterminate" color="primary"></ion-progress-bar>
+        }
+        
+        @if (!isRegistered() && platformType() === 'browser') {
+          <ion-badge color="warning" size="small">Local Only</ion-badge>
+        }
+      </div>
+    </div>
+    
+    <!-- Network Status Indicator -->
+    <div class="network-status" [class.online]="isOnline" [class.offline]="!isOnline">
+      <ion-icon [name]="isOnline ? 'cloud-outline' : 'cloud-offline-outline'"></ion-icon>
+      <span>{{ isOnline ? 'Online' : 'Offline' }}</span>
+    </div>
+  </ion-card-content>
+</ion-card>

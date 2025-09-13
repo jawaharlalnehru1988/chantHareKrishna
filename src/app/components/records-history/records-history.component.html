@@ -1,0 +1,132 @@
+<ng-template>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <ion-icon name="time-outline"></ion-icon>
+        Records History
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" (click)="closeModal()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <!-- Pull to refresh -->
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+      <ion-searchbar
+        [value]="searchTerm()"
+        (ionInput)="onSearchChange($event)"
+        placeholder="Search by date or rounds"
+        show-clear-button="focus">
+      </ion-searchbar>
+
+      <ion-segment [value]="filterPeriod()" (ionChange)="onFilterPeriodChange($event)">
+        <ion-segment-button value="all">
+          <ion-label>All</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="week">
+          <ion-label>Week</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="month">
+          <ion-label>Month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="year">
+          <ion-label>Year</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <!-- Statistics Card -->
+    <ion-card class="stats-card">
+      <ion-card-content>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{ filteredStats().totalRecords }}</div>
+            <div class="stat-label">Records</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ filteredStats().totalRounds }}</div>
+            <div class="stat-label">Total Rounds</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ filteredStats().averageRounds }}</div>
+            <div class="stat-label">Average</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{{ filteredStats().maxRounds }}</div>
+            <div class="stat-label">Best Day</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Records List -->
+    <ion-list class="records-list">
+      @for (record of filteredRecords(); track record.date) {
+        <ion-item class="record-item">
+          <div class="record-content" slot="start">
+            <div class="record-main">
+              <h3 class="record-date">{{ formatDate(record.date) }}</h3>
+              <p class="record-timestamp">{{ getRelativeTime(record.timestamp) }}</p>
+            </div>
+            <div class="record-details">
+              <ion-badge [color]="getRoundsColor(record.rounds)" class="rounds-badge">
+                {{ record.rounds }} {{ record.rounds === 1 ? 'round' : 'rounds' }}
+              </ion-badge>
+              @if (record.isAutoSynced) {
+                <ion-badge color="success" class="sync-badge">Auto</ion-badge>
+              } @else {
+                <ion-badge color="primary" class="sync-badge">Manual</ion-badge>
+              }
+            </div>
+          </div>
+          
+          <div class="record-actions" slot="end">
+            <ion-button fill="clear" size="small" (click)="editRecord(record)">
+              <ion-icon name="create-outline" color="primary"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="deleteRecord(record)">
+              <ion-icon name="trash-outline" color="danger"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      } @empty {
+        <div class="empty-state">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <h3>No Records Found</h3>
+          <p>No chanting records match your current filters.</p>
+        </div>
+      }
+    </ion-list>
+
+    <!-- Floating Action Buttons -->
+    @if (filteredRecords().length > 0) {
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="danger" (click)="bulkDeletePeriod()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    }
+  </ion-content>
+
+  <!-- Edit Modal -->
+  <ion-modal [isOpen]="showEditModal()" (didDismiss)="showEditModal.set(false)">
+    <ng-template>
+      @if (selectedRecord()) {
+        <app-edit-record 
+          [record]="selectedRecord()!" 
+          (recordUpdated)="showEditModal.set(false)"
+          (modalClosed)="showEditModal.set(false)">
+        </app-edit-record>
+      }
+    </ng-template>
+  </ion-modal>
+</ng-template>

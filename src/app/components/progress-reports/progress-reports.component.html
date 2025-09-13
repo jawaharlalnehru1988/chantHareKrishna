@@ -1,0 +1,316 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="close.emit()" fill="clear">
+        <ion-icon [icon]="closeOutline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Progress Reports</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="exportData()" fill="clear">
+        <ion-icon [icon]="shareOutline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Progress Reports</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Period Selection -->
+  <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="onPeriodChange($event)" class="period-selector">
+    <ion-segment-button value="week">
+      <ion-label>Weekly</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="month">
+      <ion-label>Monthly</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="year">
+      <ion-label>Yearly</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Chart Section -->
+  <ion-card class="chart-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon [icon]="statsChartOutline"></ion-icon>
+        Progress Trend
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-container">
+        <canvas id="progressChart"></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Weekly View -->
+  <div *ngIf="selectedPeriod() === 'week'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Weekly Statistics (Last 12 Weeks)</ion-label>
+      </ion-list-header>
+      
+      <ion-card *ngFor="let week of weeklyStats(); let i = index" [class.latest-period]="i === weeklyStats().length - 1">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon [icon]="calendarOutline"></ion-icon>
+            {{ week.weekStart }} - {{ week.weekEnd }}
+            <ion-chip *ngIf="i === weeklyStats().length - 1" color="primary">Current Week</ion-chip>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="trophyOutline" slot="start" color="warning"></ion-icon>
+                  <ion-label>
+                    <h3>{{ week.totalRounds }}</h3>
+                    <p>Total Rounds</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="statsChartOutline" slot="start" color="success"></ion-icon>
+                  <ion-label>
+                    <h3>{{ week.averageRounds }}</h3>
+                    <p>Daily Average</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="flameOutline" slot="start" color="danger"></ion-icon>
+                  <ion-label>
+                    <h3>{{ week.bestDay }}</h3>
+                    <p>Best Day</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="timeOutline" slot="start" color="medium"></ion-icon>
+                  <ion-label>
+                    <h3>{{ week.daysChanted }}/7</h3>
+                    <p>Days Chanted</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <div class="consistency-bar">
+                  <ion-label>Consistency: {{ week.consistency }}%</ion-label>
+                  <ion-progress-bar [value]="week.consistency / 100" [color]="week.consistency >= 80 ? 'success' : week.consistency >= 50 ? 'warning' : 'danger'"></ion-progress-bar>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+
+  <!-- Monthly View -->
+  <div *ngIf="selectedPeriod() === 'month'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Monthly Statistics (Last 12 Months)</ion-label>
+      </ion-list-header>
+      
+      <ion-card *ngFor="let month of monthlyStats(); let i = index" [class.latest-period]="i === monthlyStats().length - 1">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon [icon]="calendarOutline"></ion-icon>
+            {{ month.month }} {{ month.year }}
+            <ion-chip *ngIf="i === monthlyStats().length - 1" color="primary">Current Month</ion-chip>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="trophyOutline" slot="start" color="warning"></ion-icon>
+                  <ion-label>
+                    <h3>{{ month.totalRounds }}</h3>
+                    <p>Total Rounds</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="statsChartOutline" slot="start" color="success"></ion-icon>
+                  <ion-label>
+                    <h3>{{ month.averageRounds }}</h3>
+                    <p>Daily Average</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="flameOutline" slot="start" color="danger"></ion-icon>
+                  <ion-label>
+                    <h3>{{ month.bestDay }}</h3>
+                    <p>Best Day</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="timeOutline" slot="start" color="medium"></ion-icon>
+                  <ion-label>
+                    <h3>{{ month.daysChanted }}/{{ month.totalDays }}</h3>
+                    <p>Days Chanted</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <div class="consistency-bar">
+                  <ion-label>Consistency: {{ month.consistency }}%</ion-label>
+                  <ion-progress-bar [value]="month.consistency / 100" [color]="month.consistency >= 80 ? 'success' : month.consistency >= 50 ? 'warning' : 'danger'"></ion-progress-bar>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+
+  <!-- Yearly View -->
+  <div *ngIf="selectedPeriod() === 'year'">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Yearly Statistics (Last 5 Years)</ion-label>
+      </ion-list-header>
+      
+      <ion-card *ngFor="let year of yearlyStats(); let i = index" [class.latest-period]="i === yearlyStats().length - 1">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon [icon]="calendarOutline"></ion-icon>
+            {{ year.year }}
+            <ion-chip *ngIf="i === yearlyStats().length - 1" color="primary">Current Year</ion-chip>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="trophyOutline" slot="start" color="warning"></ion-icon>
+                  <ion-label>
+                    <h3>{{ year.totalRounds }}</h3>
+                    <p>Total Rounds</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="statsChartOutline" slot="start" color="success"></ion-icon>
+                  <ion-label>
+                    <h3>{{ year.averageRounds }}</h3>
+                    <p>Daily Average</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="flameOutline" slot="start" color="danger"></ion-icon>
+                  <ion-label>
+                    <h3>{{ year.bestDay }}</h3>
+                    <p>Best Day</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="trendingUpOutline" slot="start" color="tertiary"></ion-icon>
+                  <ion-label>
+                    <h3>{{ year.streakRecord }}</h3>
+                    <p>Longest Streak</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-item lines="none">
+                  <ion-icon [icon]="timeOutline" slot="start" color="medium"></ion-icon>
+                  <ion-label>
+                    <h3>{{ year.daysChanted }}/{{ year.totalDays }}</h3>
+                    <p>Days Chanted</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="6">
+                <div class="consistency-display">
+                  <ion-badge [color]="year.consistency >= 80 ? 'success' : year.consistency >= 50 ? 'warning' : 'danger'">
+                    {{ year.consistency }}% Consistency
+                  </ion-badge>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <div class="consistency-bar">
+                  <ion-progress-bar [value]="year.consistency / 100" [color]="year.consistency >= 80 ? 'success' : year.consistency >= 50 ? 'warning' : 'danger'"></ion-progress-bar>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+
+  <!-- Export Modal -->
+  <ion-modal [isOpen]="showExportModal()" (willDismiss)="closeExportModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Export & Share</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeExportModal()">
+              <ion-icon [icon]="closeOutline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-item button (click)="exportAsCSV()">
+            <ion-icon [icon]="downloadOutline" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>Export as CSV</h2>
+              <p>Download your progress data as a spreadsheet file</p>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item button (click)="shareProgress()">
+            <ion-icon [icon]="shareOutline" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <h2>Share Progress</h2>
+              <p>Share your chanting journey on social media</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

@@ -7,8 +7,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" [class]="">
+<ion-content [fullscreen]="true" [class]="themeClass()">
   <div class="guide-container">
-    <div class="guide-content" [innerHTML]="currentGuide.content"></div>
+    @if (isLoading()) {
+      <div class="loading-container">
+        <p>Loading content...</p>
+      </div>
+    } @else {
+      <div class="guide-content" [innerHTML]="currentGuide.content"></div>
+    }
   </div>
 </ion-content>

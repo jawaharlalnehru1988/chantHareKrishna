@@ -1,0 +1,136 @@
+<ng-template>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <ion-icon name="create-outline"></ion-icon>
+        Edit Record
+      </ion-title>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" (click)="closeModal()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <div class="edit-container">
+      
+      <!-- Current Record Info -->
+      <ion-card class="current-info-card">
+        <ion-card-content>
+          <h3>Editing Record</h3>
+          <p><strong>Original Date:</strong> {{ formatDate(record.date) }}</p>
+          <p><strong>Current Rounds:</strong> {{ record.rounds }}</p>
+          <p><strong>Type:</strong> {{ record.isAutoSynced ? 'Auto-synced' : 'Manual entry' }}</p>
+        </ion-card-content>
+      </ion-card>
+      
+      <!-- Edit Form -->
+      <form [formGroup]="editForm" (ngSubmit)="saveChanges()">
+        
+        <!-- Date Field -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">
+            <ion-icon name="calendar-outline"></ion-icon>
+            Date *
+          </ion-label>
+          <ion-datetime
+            formControlName="date"
+            presentation="date"
+            [max]="getTodaysDate()"
+            (ionChange)="onDateChange($event)"
+            class="date-picker">
+          </ion-datetime>
+        </ion-item>
+        @if (getFieldError('date')) {
+          <div class="error-message">{{ getFieldError('date') }}</div>
+        }
+        
+        <!-- Rounds Field -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">
+            <ion-icon name="trending-up-outline"></ion-icon>
+            Rounds Completed *
+          </ion-label>
+          <ion-select
+            formControlName="rounds"
+            placeholder="Select rounds"
+            interface="popover"
+            (ionChange)="onRoundsChange($event)"
+            class="rounds-select">
+            @for (rounds of roundsOptions; track rounds) {
+              <ion-select-option [value]="rounds">
+                @if (rounds === 0) {
+                  0 rounds (No chanting)
+                } @else {
+                  {{ rounds }} {{ rounds === 1 ? 'round' : 'rounds' }}
+                }
+              </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        @if (getFieldError('rounds')) {
+          <div class="error-message">{{ getFieldError('rounds') }}</div>
+        }
+        
+        <!-- Sync Type Field -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">
+            <ion-icon name="sync-outline"></ion-icon>
+            Record Type
+          </ion-label>
+          <ion-select
+            [value]="record.isAutoSynced ? 'auto' : 'manual'"
+            placeholder="Select type"
+            interface="popover"
+            (ionChange)="onSyncTypeChange($event)">
+            <ion-select-option value="auto">Auto-synced</ion-select-option>
+            <ion-select-option value="manual">Manual entry</ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+          <p><strong>Note:</strong></p>
+          <ul>
+            <li>🗓️ Cannot select future dates</li>
+            <li>📊 Rounds must be between 0-128</li>
+            <li>⚠️ Changing date will move the record</li>
+            <li>🔄 Auto-synced records come from chant page</li>
+          </ul>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <ion-button
+            type="submit"
+            expand="block"
+            [disabled]="!isFormValid()"
+            color="primary">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            Save Changes
+          </ion-button>
+          
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="closeModal()">
+            Cancel
+          </ion-button>
+        </div>
+        
+      </form>
+    </div>
+  </ion-content>
+
+  <!-- Toast for messages -->
+  <ion-toast
+    [isOpen]="showToast()"
+    [message]="toastMessage()"
+    [color]="toastColor()"
+    duration="2000"
+    (didDismiss)="showToast.set(false)"
+    position="top">
+  </ion-toast>
+</ng-template>

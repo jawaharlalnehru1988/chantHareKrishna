@@ -1,0 +1,300 @@
+// Progress Chart Component Styles
+
+.chart-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  margin: 16px;
+
+  ion-segment {
+    flex: 1;
+    margin-right: 12px;
+    --background: transparent;
+    --color: var(--ion-color-medium);
+    --color-checked: var(--ion-color-primary);
+    --background-checked: rgba(var(--ion-color-primary-rgb), 0.1);
+    --border-radius: 8px;
+  }
+
+  ion-button {
+    --color: var(--ion-color-medium);
+    --background: transparent;
+
+    &:hover {
+      --color: var(--ion-color-primary);
+    }
+  }
+}
+
+.chart-summary {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, var(--ion-color-primary-tint), var(--ion-color-primary));
+  color: var(--ion-color-primary-contrast);
+
+  ion-card-content {
+    padding: 20px;
+  }
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+
+  ion-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    color: var(--ion-color-primary-contrast);
+  }
+}
+
+.summary-info {
+  flex: 1;
+  min-width: 0;
+
+  .summary-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .summary-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+}
+
+.chart-container {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  ion-card-header {
+    padding: 20px 20px 0 20px;
+  }
+
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ion-color-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    ion-icon {
+      font-size: 1.3rem;
+    }
+  }
+
+  ion-card-content {
+    padding: 20px;
+  }
+}
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+
+  canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--ion-color-medium);
+
+  .loading-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    animation: spin 2s linear infinite;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--ion-color-medium);
+  text-align: center;
+  padding: 20px;
+
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+.insights-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, var(--ion-color-success-tint), var(--ion-color-light));
+
+  ion-card-content {
+    padding: 20px;
+  }
+}
+
+.insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 1.3rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .insight-text {
+    flex: 1;
+    line-height: 1.5;
+    color: var(--ion-color-dark);
+
+    strong {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .chart-controls {
+    background: var(--ion-color-dark-shade);
+  }
+
+  .chart-container,
+  .insights-card {
+    background: var(--ion-color-dark-shade);
+  }
+
+  .insights-card {
+    background: linear-gradient(135deg, var(--ion-color-dark-tint), var(--ion-color-dark-shade));
+  }
+
+  .insight .insight-text {
+    color: var(--ion-color-light);
+  }
+}
+
+// Responsive design
+@media (max-width: 576px) {
+  .chart-controls {
+    flex-direction: column;
+    gap: 12px;
+
+    ion-segment {
+      margin-right: 0;
+      width: 100%;
+    }
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .summary-item {
+    padding: 10px;
+  }
+
+  .summary-info .summary-value {
+    font-size: 1.3rem;
+  }
+
+  .canvas-container {
+    min-height: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+  .chart-controls,
+  .chart-container,
+  .chart-summary,
+  .insights-card {
+    margin: 16px auto;
+    max-width: 800px;
+  }
+
+  .canvas-container {
+    min-height: 300px;
+  }
+}
+
+// Animation for chart updates
+.chart-container {
+  transition: opacity 0.3s ease;
+
+  &.updating {
+    opacity: 0.7;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .loading-icon {
+    animation: none;
+  }
+
+  .chart-container {
+    transition: none;
+  }
+}

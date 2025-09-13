@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register for Hare Krishna Chanting</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="closeModal()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  
+  <ion-content class="ion-padding">
+    <div class="registration-container">
+      <!-- Welcome Message -->
+      <div class="welcome-section">
+        <h2>🙏 Backup Your Progress</h2>
+        <p>Register to permanently save your chanting progress and sync across devices. If you skip, your data will be stored locally on this browser only.</p>
+      </div>
+      
+      <!-- Registration Form -->
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Name Field -->
+        <ion-item>
+          <ion-label position="stacked">
+            <ion-icon name="person-outline"></ion-icon>
+            Full Name *
+          </ion-label>
+          <ion-input 
+            formControlName="name" 
+            placeholder="Enter your full name"
+            type="text">
+          </ion-input>
+        </ion-item>
+        @if (getFieldError('name')) {
+          <div class="error-message">
+            {{ getFieldError('name') }}
+          </div>
+        }
+        
+        <!-- Contact Method Selection -->
+        <div class="contact-method-section">
+          <ion-label>
+            <h3>Choose Contact Method *</h3>
+          </ion-label>
+          
+          <div class="contact-buttons">
+            <ion-button 
+              [fill]="contactMethod() === 'phone' ? 'solid' : 'outline'"
+              (click)="setContactMethod('phone')"
+              size="small">
+              <ion-icon name="call-outline" slot="start"></ion-icon>
+              Phone
+            </ion-button>
+            
+            <ion-button 
+              [fill]="contactMethod() === 'email' ? 'solid' : 'outline'"
+              (click)="setContactMethod('email')"
+              size="small">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              Email
+            </ion-button>
+          </div>
+        </div>
+        
+        <!-- Phone Field (conditional) -->
+        @if (contactMethod() === 'phone') {
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="call-outline"></ion-icon>
+              Phone Number *
+            </ion-label>
+            <ion-input 
+              formControlName="phone" 
+              placeholder="Enter 10-digit phone number"
+              type="tel">
+            </ion-input>
+          </ion-item>
+          @if (getFieldError('phone')) {
+            <div class="error-message">
+              {{ getFieldError('phone') }}
+            </div>
+          }
+        }
+        
+        <!-- Email Field (conditional) -->
+        @if (contactMethod() === 'email') {
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-icon name="mail-outline"></ion-icon>
+              Email Address *
+            </ion-label>
+            <ion-input 
+              formControlName="email" 
+              placeholder="Enter your email address"
+              type="email">
+            </ion-input>
+          </ion-item>
+          @if (getFieldError('email')) {
+            <div class="error-message">
+              {{ getFieldError('email') }}
+            </div>
+          }
+        }
+        
+        <!-- PIN Code Field -->
+        <ion-item>
+          <ion-label position="stacked">
+            <ion-icon name="keypad-outline"></ion-icon>
+            Create PIN (4-6 digits) *
+          </ion-label>
+          <ion-input 
+            formControlName="pincode" 
+            placeholder="Enter 4-6 digit PIN"
+            type="password"
+            maxlength="6">
+          </ion-input>
+        </ion-item>
+        @if (getFieldError('pincode')) {
+          <div class="error-message">
+            {{ getFieldError('pincode') }}
+          </div>
+        }
+        
+        <!-- Info Box -->
+        <div class="info-box">
+          <p><strong>Why register?</strong></p>
+          <ul>
+            <li>📊 Sync progress across devices</li>
+            <li>📈 Advanced analytics and reports</li>
+            <li>🏆 Achievement tracking</li>
+            <li>☁️ Cloud backup of your data</li>
+          </ul>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <ion-button 
+            type="submit" 
+            expand="block" 
+            [disabled]="!isFormValid() || isLoading()"
+            color="primary">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            {{ isLoading() ? 'Registering...' : 'Register Now' }}
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            (click)="skipRegistration()"
+            [disabled]="isLoading()">
+            Continue as Guest
+          </ion-button>
+        </div>
+        
+      </form>
+    </div>
+  </ion-content>
+  
+  <!-- Toast for messages -->
+  <ion-toast
+    [isOpen]="showToast()"
+    [message]="toastMessage()"
+    duration="3000"
+    (didDismiss)="showToast.set(false)"
+    position="top">
+  </ion-toast>

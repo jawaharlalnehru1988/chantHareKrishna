@@ -1,0 +1,288 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ progressTrackerContent.title }}</ion-title>
+    @if (isRegistered()) {
+      <ion-buttons slot="end">
+        <ion-button (click)="showRegistrationModal()" fill="clear">
+          <ion-icon name="person-add-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Sync Status Component -->
+  <app-sync-status class="compact"></app-sync-status>
+  
+  <!-- Main Progress Stats Card -->
+  <ion-card class="stats-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="trophy-outline"></ion-icon>
+        {{ progressTrackerContent.progressOverview }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">{{ progressStats().totalDaysChanted }}</div>
+          <div class="stat-label">{{ progressTrackerContent.totalDays }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ progressStats().totalRounds }}</div>
+          <div class="stat-label">{{ progressTrackerContent.totalRounds }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ progressStats().currentStreak }}</div>
+          <div class="stat-label">{{ progressTrackerContent.currentStreak }} {{ getStreakEmoji(progressStats().currentStreak) }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ progressStats().averageRoundsPerDay.toFixed(1) }}</div>
+          <div class="stat-label">{{ progressTrackerContent.averageRounds }}</div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Date and Rounds Input Card -->
+  <ion-card class="input-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="calendar-outline"></ion-icon>
+        {{ progressTrackerContent.addEditRecord }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Date Selection -->
+      <ion-item class="date-item" button (click)="showDatePicker.set(true)">
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h3>{{ progressTrackerContent.date }}</h3>
+          <p>{{ formatDate(selectedDate()) }}</p>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+      </ion-item>
+
+      <!-- Rounds Selection -->
+      <ion-item class="rounds-item">
+        <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">{{ progressTrackerContent.roundsCompleted }}</ion-label>
+        <ion-select 
+          [value]="selectedRounds()" 
+          (ionChange)="onRoundsChange($event)"
+          [placeholder]="progressTrackerContent.selectRounds"
+          interface="popover"
+          class="rounds-select">
+          <ion-select-option value="0" class="zero-rounds-option">
+            <span class="rounds-text">{{ progressTrackerContent.noChantingToday }}</span>
+          </ion-select-option>
+          @for (rounds of roundsOptions; track rounds) {
+            <ion-select-option [value]="rounds" class="rounds-option">
+              <span class="rounds-text">{{ rounds }} {{ rounds === 1 ? progressTrackerContent.oneRound : progressTrackerContent.multipleRounds }}</span>
+            </ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+
+      <!-- Suggested Rounds (if available) -->
+      @if (suggestedRounds() > 0 && selectedDate() === getTodaysDate()) {
+        <ion-item class="suggestion-item">
+          <ion-icon name="flame-outline" slot="start" color="warning"></ion-icon>
+          <ion-label>
+            <h3>{{ progressTrackerContent.suggested }}: {{ suggestedRounds() }} {{ suggestedRounds() === 1 ? progressTrackerContent.oneRound : progressTrackerContent.multipleRounds }}</h3>
+            <p>{{ progressTrackerContent.fromTodaysSession }}</p>
+          </ion-label>
+          <ion-button fill="clear" (click)="useSuggestedRounds()" color="warning">
+            {{ progressTrackerContent.use }}
+          </ion-button>
+        </ion-item>
+      }
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <ion-button 
+          expand="block" 
+          [disabled]="!canSaveForDate() || selectedRounds() < 0"
+          (click)="saveChantingRecord()"
+          [color]="getProgressColor(selectedRounds())">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
+          {{ selectedDateRecord() ? progressTrackerContent.updateRecord : progressTrackerContent.saveRecord }}
+        </ion-button>
+        
+        @if (selectedDateRecord()) {
+          <div class="existing-record-actions">
+            <ion-button fill="clear" (click)="editRecord()" color="primary">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              {{ progressTrackerContent.edit }}
+            </ion-button>
+            <ion-button fill="clear" (click)="deleteRecord()" color="danger">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              {{ progressTrackerContent.delete }}
+            </ion-button>
+          </div>
+        }
+        
+        <!-- Records History Button -->
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          (click)="openRecordsHistory()"
+          color="secondary">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          {{ progressTrackerContent.viewAllRecords }}
+        </ion-button>
+        
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          (click)="openProgressReports()"
+          color="tertiary"
+          style="margin-top: 8px;">
+          <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+          {{ progressTrackerContent.progressReports }}
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Streak Achievements Card -->
+  <ion-card class="streak-achievements-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="flame-outline"></ion-icon>
+        {{ progressTrackerContent.streakAchievements }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Today's Status -->
+      <div class="today-status" [class]="getTodayStreakStatus().status">
+        <ion-icon [name]="getTodayStreakStatus().streakSafe ? 'checkmark-circle' : 'warning'" 
+                  [color]="getTodayStreakStatus().streakSafe ? 'success' : 'warning'"></ion-icon>
+        <span>{{ getTodayStreakStatus().message }}</span>
+      </div>
+      
+      <!-- Achievements List -->
+      @for (achievement of getStreakAchievements(); track achievement.type) {
+        <div class="achievement-item" [class]="achievement.level">
+          <div class="achievement-badge">
+            <ion-icon name="trophy-outline"></ion-icon>
+          </div>
+          <div class="achievement-content">
+            <div class="achievement-message">{{ achievement.message }}</div>
+            <div class="achievement-days">{{ achievement.streak }} consecutive days</div>
+          </div>
+        </div>
+      }
+      
+      <!-- Next Milestone -->
+      @if (getNextStreakMilestone()) {
+        <div class="next-milestone">
+          <ion-icon name="flag-outline" color="primary"></ion-icon>
+          <div class="milestone-info">
+            <div class="milestone-message">{{ getNextStreakMilestone().message }}</div>
+            <div class="milestone-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" 
+                     [style.width.%]="(1 - (getNextStreakMilestone().daysToGo / getNextStreakMilestone().target)) * 100">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Current Record Display -->
+  @if (selectedDateRecord()) {
+    <ion-card class="current-record-card">
+      <ion-card-header>
+        <ion-card-title>{{ progressTrackerContent.currentRecord }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="record-display">
+          <div class="record-info">
+            <h3>{{ selectedDateRecord()?.rounds }} rounds</h3>
+            <p>{{ formatDate(selectedDateRecord()?.date || '') }}</p>
+            @if (selectedDateRecord()?.isAutoSynced) {
+              <small class="auto-synced">{{ progressTrackerContent.autoSynced }}</small>
+            } @else {
+              <small class="manual-entry">{{ progressTrackerContent.manualEntry }}</small>
+            }
+          </div>
+          <div class="record-visual">
+            <div class="progress-circle" [attr.data-color]="getProgressColor(selectedDateRecord()?.rounds || 0)">
+              {{ selectedDateRecord()?.rounds }}
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <!-- Date Picker Modal -->
+  <ion-modal [isOpen]="showDatePicker()" (didDismiss)="showDatePicker.set(false)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ progressTrackerContent.selectDate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showDatePicker.set(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-datetime
+          [value]="selectedDate()"
+          presentation="date"
+          [max]="getTodaysDate()"
+          (ionChange)="onDateChange($event)">
+        </ion-datetime>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Toast for messages -->
+  <ion-toast
+    [isOpen]="showToast()"
+    [message]="toastMessage()"
+    [duration]="2000"
+    position="bottom"
+    (didDismiss)="showToast.set(false)">
+  </ion-toast>
+
+  <!-- Progress Chart Component -->
+  <app-progress-chart [height]="300"></app-progress-chart>
+
+  <!-- Alert for confirmations -->
+  <ion-alert
+    [isOpen]="showAlert()"
+    [header]="progressTrackerContent.confirmAction"
+    [message]="alertMessage()"
+    [buttons]="alertButtons"
+    (didDismiss)="showAlert.set(false)">
+  </ion-alert>
+
+  <!-- Records History Component -->
+  @if (showRecordsHistory()) {
+    <app-records-history (close)="closeRecordsHistory()"></app-records-history>
+  }
+
+  <!-- Progress Reports Component -->
+  @if (showProgressReports()) {
+    <app-progress-reports (close)="closeProgressReports()"></app-progress-reports>
+  }
+
+  <!-- Manual registration access for unregistered browser users -->
+  @if (platformType() === 'browser' && !isRegistered()) {
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="showRegistrationModal()" color="primary" size="small">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  }
+</ion-content>

@@ -1,0 +1,611 @@
+// Progress Tracker Page Styles
+.stats-card {
+  margin: 16px;
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade));
+  color: var(--ion-color-primary-contrast);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  ion-card-header {
+    padding-bottom: 8px;
+  }
+
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ion-color-primary-contrast);
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    ion-icon {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+}
+
+.input-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ion-color-primary);
+    font-size: 1.1rem;
+
+    ion-icon {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.date-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: var(--ion-color-light);
+
+  ion-icon[slot="start"] {
+    color: var(--ion-color-primary);
+    margin-right: 12px;
+  }
+
+  ion-label {
+    h3 {
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      color: var(--ion-color-dark);
+    }
+
+    p {
+      margin: 0;
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+    }
+  }
+
+  &:hover {
+    background: var(--ion-color-light-shade);
+  }
+}
+
+.rounds-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+
+  ion-icon[slot="start"] {
+    color: #3880ff;
+    margin-right: 12px;
+  }
+
+  ion-label {
+    font-weight: 600;
+    color: #333333;
+  }
+
+  .rounds-select {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333333;
+    min-height: 44px;
+    
+    // Custom styling for select options
+    .zero-rounds-option {
+      color: #666666 !important;
+      font-style: italic;
+      
+      .rounds-text {
+        color: #666666 !important;
+        display: block;
+        padding: 8px 12px;
+      }
+    }
+    
+    .rounds-option {
+      color: #333333 !important;
+      
+      .rounds-text {
+        color: #333333 !important;
+        display: block;
+        padding: 8px 12px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Ensure select options are visible in all themes
+ion-select-option {
+  color: #333333 !important;
+  background: #ffffff !important;
+  
+  &.zero-rounds-option {
+    color: #666666 !important;
+    font-style: italic;
+  }
+  
+  .rounds-text {
+    color: inherit !important;
+  }
+}
+
+.suggestion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+  border: 1px solid rgba(255, 193, 7, 0.3);
+
+  ion-icon[slot="start"] {
+    font-size: 1.2rem;
+  }
+
+  ion-label {
+    h3 {
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      color: var(--ion-color-warning);
+    }
+
+    p {
+      margin: 0;
+      color: var(--ion-color-warning-shade);
+      font-size: 0.9rem;
+    }
+  }
+
+  ion-button {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    font-weight: 600;
+  }
+}
+
+.action-buttons {
+  margin-top: 24px;
+
+  ion-button[expand="block"] {
+    --border-radius: 12px;
+    font-weight: 600;
+    height: 48px;
+    margin-bottom: 12px;
+
+    ion-icon[slot="start"] {
+      margin-right: 8px;
+    }
+  }
+}
+
+.existing-record-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+
+  ion-button {
+    flex: 1;
+    --border-radius: 12px;
+    height: 40px;
+    font-weight: 500;
+
+    ion-icon[slot="start"] {
+      margin-right: 6px;
+    }
+  }
+}
+
+.current-record-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, var(--ion-color-success-tint), var(--ion-color-success));
+  color: var(--ion-color-success-contrast);
+
+  ion-card-title {
+    color: var(--ion-color-success-contrast);
+  }
+}
+
+.record-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.record-info {
+  flex: 1;
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--ion-color-success-contrast);
+  }
+
+  p {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  small {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-style: italic;
+
+    &.auto-synced {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    &.manual-entry {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+.progress-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--ion-color-success-contrast);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+
+  &[data-color="success"] {
+    background: var(--ion-color-success);
+    border-color: var(--ion-color-success-shade);
+  }
+
+  &[data-color="warning"] {
+    background: var(--ion-color-warning);
+    border-color: var(--ion-color-warning-shade);
+    color: var(--ion-color-warning-contrast);
+  }
+
+  &[data-color="primary"] {
+    background: var(--ion-color-primary);
+    border-color: var(--ion-color-primary-shade);
+  }
+
+  &[data-color="medium"] {
+    background: var(--ion-color-medium);
+    border-color: var(--ion-color-medium-shade);
+  }
+}
+
+// Modal styles
+ion-modal {
+  --border-radius: 16px;
+  --box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+  ion-datetime {
+    --background: var(--ion-background-color);
+    padding: 16px;
+  }
+}
+
+// FAB button for registration
+ion-fab {
+  ion-fab-button {
+    --background: var(--ion-color-warning);
+    --background-activated: var(--ion-color-warning-shade);
+    --color: var(--ion-color-warning-contrast);
+    --box-shadow: 0 4px 16px rgba(255, 193, 7, 0.4);
+
+    &:hover {
+      --background: var(--ion-color-warning-shade);
+    }
+  }
+}
+
+// Toast styling
+ion-toast {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+// Alert styling
+ion-alert {
+  --border-radius: 16px;
+}
+
+// Responsive design
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .stat-item {
+    padding: 8px;
+
+    .stat-number {
+      font-size: 1.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+    }
+  }
+
+  .record-display {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .existing-record-actions {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .input-card,
+  .current-record-card,
+  .stats-card {
+    margin: 16px auto;
+    max-width: 600px;
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .date-item,
+  .rounds-item {
+    background: var(--ion-color-dark-tint);
+  }
+
+  .input-card,
+  .current-record-card {
+    background: var(--ion-color-dark-shade);
+  }
+
+  .suggestion-item {
+    background: linear-gradient(90deg, rgba(255, 193, 7, 0.15), rgba(255, 193, 7, 0.08));
+    border-color: rgba(255, 193, 7, 0.4);
+  }
+}
+
+// Loading and empty states
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+/* Streak Achievements Card */
+.streak-achievements-card {
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    ion-icon {
+      color: #ff6b35;
+    }
+  }
+  
+  .today-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background-color: #f8f9fa;
+    
+    &.completed {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    &.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    &.safe {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+    
+    ion-icon {
+      font-size: 20px;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+  }
+  
+  .achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .achievement-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+    
+    .achievement-content {
+      flex: 1;
+      
+      .achievement-message {
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      
+      .achievement-days {
+        font-size: 0.9em;
+        color: #666;
+      }
+    }
+    
+    &.diamond {
+      .achievement-badge {
+        background: linear-gradient(135deg, #b9f2ff, #00d4ff);
+        color: #003d4a;
+      }
+    }
+    
+    &.gold {
+      .achievement-badge {
+        background: linear-gradient(135deg, #ffd700, #ffb300);
+        color: #663d00;
+      }
+    }
+    
+    &.silver {
+      .achievement-badge {
+        background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+        color: #404040;
+      }
+    }
+    
+    &.bronze {
+      .achievement-badge {
+        background: linear-gradient(135deg, #cd7f32, #b8860b);
+        color: #3d2400;
+      }
+    }
+    
+    &.starter {
+      .achievement-badge {
+        background: linear-gradient(135deg, #90ee90, #32cd32);
+        color: #004d00;
+      }
+    }
+    
+    &.beginner {
+      .achievement-badge {
+        background: linear-gradient(135deg, #87ceeb, #4682b4);
+        color: #1e3a5f;
+      }
+    }
+  }
+  
+  .next-milestone {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-radius: 8px;
+    margin-top: 16px;
+    
+    ion-icon {
+      margin-top: 2px;
+      font-size: 20px;
+    }
+    
+    .milestone-info {
+      flex: 1;
+      
+      .milestone-message {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #1565c0;
+      }
+      
+      .milestone-progress {
+        .progress-bar {
+          height: 6px;
+          background-color: #e0e0e0;
+          border-radius: 3px;
+          overflow: hidden;
+          
+          .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1565c0, #42a5f5);
+            transition: width 0.3s ease;
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { flowerOutline, refreshOutline,  languageOutline, closeOutline, musicalN
 
 import { ThemeService } from '../services/theme.service';
 import { LanguageService, LanguageType, LanguageOption, AppContent } from '../services/language.service';
+import { ProgressService } from '../services/progress.service';
 
 // Sound types for chanting
 type ChantSoundType = 'none' | 'tick' | 'prabhupada' | 'continuous';
@@ -139,7 +140,11 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     }
   ];
 
-  constructor(private themeService: ThemeService, private languageService: LanguageService) {
+  constructor(
+    private themeService: ThemeService, 
+    private languageService: LanguageService,
+    private progressService: ProgressService
+  ) {
     addIcons({flowerOutline,refreshOutline,musicalNotesOutline,languageOutline,musicalNotes,closeOutline,playOutline,pauseOutline,bonfireOutline});
   }
 
@@ -165,6 +170,12 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     
     // Load saved progress
     this.loadProgress();
+    
+    // Load today's progress from progress service if available
+    this.loadTodaysProgressFromService();
+    
+    // Set up day-end sync checking
+    this.checkForDayEndSync();
     
     // Update progress ring
     this.updateProgressRing();
@@ -388,6 +399,88 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       currentSoundMode: this.currentSoundMode
     };
     localStorage.setItem('chantProgress', JSON.stringify(progress));
+    
+    // Sync with progress service
+    this.syncWithProgressService();
+  }
+  
+  // Sync current chanting data with progress service
+  private syncWithProgressService() {
+    // Update the current rounds signal in progress service
+    this.progressService.updateCurrentRounds(this.roundsCompleted);
+    
+    // If we have completed rounds today, create/update today's record
+    if (this.roundsCompleted > 0) {
+      this.autoSyncTodaysProgress();
+    }
+  }
+  
+  // Load today's progress from progress service if available
+  private loadTodaysProgressFromService() {
+    const today = new Date().toISOString().split('T')[0];
+    const todaysRecord = this.progressService.getChantingRecord(today);
+    
+    if (todaysRecord && todaysRecord.isAutoSynced) {
+      // If we have an auto-synced record for today, update our local state
+      // Only if our local rounds are less than the saved ones (avoid going backwards)
+      if (this.roundsCompleted < todaysRecord.rounds) {
+        this.roundsCompleted = todaysRecord.rounds;
+        this.saveProgress(); // Save to local storage as well
+      }
+    }
+  }
+  
+  // Check for day-end sync (preserve yesterday's progress)
+  private checkForDayEndSync() {
+    const today = new Date().toISOString().split('T')[0];
+    const lastSyncDate = localStorage.getItem('lastSyncDate');
+    
+    if (lastSyncDate && lastSyncDate !== today) {
+      // Day has changed, sync yesterday's final progress
+      const yesterdayProgress = localStorage.getItem('chantProgress');
+      if (yesterdayProgress) {
+        try {
+          const progress = JSON.parse(yesterdayProgress);
+          if (progress.roundsCompleted > 0) {
+            // Create final record for yesterday
+            const yesterdayRecord = {
+              date: lastSyncDate,
+              rounds: progress.roundsCompleted,
+              timestamp: Date.now(),
+              isAutoSynced: true
+            };
+            this.progressService.addChantingRecord(yesterdayRecord);
+          }
+        } catch (error) {
+          console.warn('Failed to sync yesterday\'s progress:', error);
+        }
+      }
+      
+      // Reset today's progress to 0 (new day)
+      this.roundsCompleted = 0;
+      this.currentRound = 0;
+      this.mahaRounds = 0;
+      this.saveProgress();
+    }
+    
+    // Update last sync date to today
+    localStorage.setItem('lastSyncDate', today);
+  }
+  
+  // Automatically sync today's progress when rounds are completed
+  private autoSyncTodaysProgress() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Create a chanting record for today with current progress
+    const todaysRecord = {
+      date: today,
+      rounds: this.roundsCompleted,
+      timestamp: Date.now(),
+      isAutoSynced: true // Mark as automatically synced from chant page
+    };
+    
+    // Add/update the record in progress service
+    this.progressService.addChantingRecord(todaysRecord);
   }
 
   // Load progress from localStorage

@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'article',
     loadComponent: () => import('./article/article.page').then( m => m.ArticlePage)
   },
+  {
+    path: 'progress-tracker',
+    loadComponent: () => import('./progress-tracker/progress-tracker.page').then( m => m.ProgressTrackerPage)
+  },
 ];
