@@ -1,8 +1,25 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
      <ion-buttons slot="start">
-      <!-- <ion-back-button defaultHref="/"></ion-back-button> -->
+   
        <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <div class="language-dropdown" [class]="themeClass()">
+        <ion-select
+          [value]="currentLanguage()"
+          (ionChange)="onLanguageChange($event)"
+          interface="popover"
+          placeholder="Language"
+          class="theme-select"
+          [class]="themeClass()">
+          @for (language of languageOptions; track language.key) {
+            <ion-select-option [value]="language.key">
+              {{language.description}} - {{language.name}}
+            </ion-select-option>
+          }
+        </ion-select>
+      </div>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

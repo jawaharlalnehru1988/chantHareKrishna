@@ -51,9 +51,21 @@ export class HowToChantContentService {
           const englishModule = await import('../content/how-to-chant/english');
           return englishModule.content;
         case 'tamil':
-          // Tamil content module not found, fallback to English
-          const fallbackModule = await import('../content/how-to-chant/english');
-          return fallbackModule.content;
+          try {
+            const tamilModule = await import('../content/how-to-chant/tamil');
+            return tamilModule.content;
+          } catch {
+            const fallbackModule = await import('../content/how-to-chant/english');
+            return fallbackModule.content;
+          }
+        case 'hindi':
+          try {
+            const hindiModule = await import('../content/how-to-chant/hindi');
+            return hindiModule.content;
+          } catch {
+            const fallbackModule = await import('../content/how-to-chant/english');
+            return fallbackModule.content;
+          }
         default:
           // For other languages, fallback to English for now
           // Content can be added later following the same pattern
